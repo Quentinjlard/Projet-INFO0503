@@ -1,0 +1,26 @@
+{
+    "adresseServeurTCP":"localhost",
+    "portServeurTCP":5001,
+
+    "adresseElecticiteTareTCP":"localhost",
+    "portElecticiteTareTCP":1021,
+    "adresseElecticitePoneUDP":"localhost",
+    "portElecticitePoneUDP":5033,
+
+    "adresseGazTareTCP":"localhost",
+    "portGazTareTCP":1022,
+    "adresseGazPoneUDP":"localhost",
+    "portGazPoneUDP":5034,
+
+    "adressePetroleTareTCP":"localhost",
+    "portPetroleTareTCP":1023,
+    "adressePetrolePoneUDP":"localhost",
+    "portPetrolePoneUDP":5035,
+
+    "adresseMarcheGros":"localhost",
+    "portMarcheGros":4012,
+
+    "adresseAMI":"localhost",
+    "portAMI":6000
+    
+}
