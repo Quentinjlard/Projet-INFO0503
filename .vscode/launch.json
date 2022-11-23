@@ -6,10 +6,19 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Lanceur",
+            "request": "launch",
+            "mainClass": "Lanceur",
+            "projectName": "Projet-INFO0503_65b3ef6e"
+            ,
+            "args": "config.json"
+        },
+        {
+            "type": "java",
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}",
-            "args" : "config.json"
+            "args": "config.json"
         },
         {
             "type": "java",
@@ -17,7 +26,7 @@
             "request": "launch",
             "mainClass": "Lanceur",
             "projectName": "Projet-0503_ee9cd1e8",
-            "args" : "config.json"
+            "args": "config.json"
         }
     ]
 }
