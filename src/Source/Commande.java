@@ -3,24 +3,33 @@ package Source;
 import org.json.*;
 
 public class Commande {
+    private int numeroDeCommande;
     private String TypeEnergie;
     private int QuantiteDemander;
     private String ModeExtraction;
     private int PrixTotals;
     private int NumeroDeLot;
 
-    public Commande(int NumeroDeLot, String TypeEnergie,String ModeExtraction,int QuantiteDemander, int PrixTotals) {
-        this.NumeroDeLot = NumeroDeLot;
+    public Commande(int numeroDeCommande, String TypeEnergie,String ModeExtraction,int QuantiteDemander, int PrixTotals, int NumeroDeLot) {
+        this.numeroDeCommande = numeroDeCommande;
         this.TypeEnergie = TypeEnergie;
         this.QuantiteDemander = QuantiteDemander;
         this.ModeExtraction = ModeExtraction;
         this.PrixTotals = PrixTotals;
+        if(NumeroDeLot == 0)
+            this.NumeroDeLot = -1;
+        else
+            this.NumeroDeLot = NumeroDeLot;
     }
 
     public static String[] Split(String reference)
     {
         String[] partiRef = reference.split("&");
         return partiRef;
+    }
+
+    public int getNumeroDeCommande() {
+        return numeroDeCommande;
     }
 
     public int getNumeroDeLot() {
@@ -49,11 +58,12 @@ public class Commande {
     public JSONObject toJson()
     {
         JSONObject json = new JSONObject();
-        json.put("NumeroDeLot", this.NumeroDeLot);
+        json.put("NumeroDeCommande", this.numeroDeCommande);
         json.put("TypeEnergie", this.TypeEnergie);
         json.put("QuantiteDemander", this.QuantiteDemander);
         json.put("ModeExtraction", this.ModeExtraction);
         json.put("PrixTotals", this.PrixTotals);
+        json.put("NumeroDeLot", this.NumeroDeLot);
 
         return json;
     }
@@ -61,30 +71,33 @@ public class Commande {
     public static Commande FromJSON(String json)
     {
         JSONObject objet = new JSONObject(json);
-        int NumeroDeLot = objet.getInt("NumeroDeLot");
+        int numeroDeCommande = objet.getInt("NumeroDeCommande");
         String TypeEnergie = objet.getString("TypeEnergie");
         int QuantiteDemander = objet.getInt("QuantiteDemander");
         String ModeExtraction = objet.getString("ModeExtraction");
         int PrixTotals = objet.getInt("PrixTotals");
-        Commande code = new Commande(
-                            NumeroDeLot,
+        int NumeroDeLot = objet.getInt("NumeroDeLot");
+        Commande commande = new Commande(
+                            numeroDeCommande,
                             TypeEnergie, 
                             ModeExtraction, 
                             QuantiteDemander,
-                            PrixTotals
+                            PrixTotals,
+                            NumeroDeLot
                             );
 
-        return code;
+        return commande;
     }
 
     @Override
     public String toString() {
             System.out.println("\n"+
-                                "-  => NumeroDeLot : " + this.NumeroDeLot + "\n" +
+                                "-  => NumeroDeCommande : " + this.numeroDeCommande + "\n" +
                                 "-  => Type Enegie :" + this.TypeEnergie +"\n"+
                                 "-  => Mode extraction :" + this.ModeExtraction +"\n"+
                                 "-  => Quantite Envoyer : " + this.QuantiteDemander +"\n"+
-                                "-  => Prix Total :" + this.PrixTotals+ "\n"
+                                "-  => Prix Total :" + this.PrixTotals+ "\n" +
+                                "-  => NumeroDeLot : " + this.NumeroDeLot + "\n" 
                                 );
         return super.toString();
     }

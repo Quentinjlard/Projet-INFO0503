@@ -32,6 +32,9 @@ public class MarcheGros implements Runnable{
     private final int portMarcheGros;
     private Messenger gestionMessage;
     private int portEcoute = 4012;
+    private int portEcouteTareElectricite = 1021;
+    private int portEcouteTareGaz = 1022;
+    private int portEcouteTarePetrole = 1023;
 
     public MarcheGros(int portMarcheGros) 
     {
@@ -78,89 +81,183 @@ public class MarcheGros implements Runnable{
                 System.err.println("Erreur lors de la réception du message : " + e);
                 System.exit(0);
             }
+            String msgRecuStroString = new String(msgRecu.getData());
+            String test = msgRecuStroString.substring(2, 13);
+            Energie energie = null;
+            Commande commande = null;
 
-            Energie energie = Energie.FromJSON(new String(msgRecu.getData()));
-            gestionMessage.afficheMessage("J'ai bien recu le paquet : " + energie.getNumeroDeLot());
-
-            if(energie.getTypeEnergie().equals("Electricite"))
+            if(test.equals("NumeroDeLot"))
             {
-                System.out.print("  => Electricite => ");
-                if(energie.getModeExtraction().equals("Nucleaire"))
-                {
-                    System.out.print("Nucleaire \n");
-                    electriciteNucleaire.add(energie);
-                }
-                else
-                {
-                    if(energie.getModeExtraction().equals("Eolienne"))
-                    {
-                        System.out.print("Eolienne \n");
-                        electriciteEolienne.add(energie);
-                    }
-                    else
-                    {
-                        if(energie.getModeExtraction().equals("Charbon"))
-                        {
-                            System.out.print("Charbon \n");
-                            electriciteCharbon.add(energie);
-                        }
-                    }
-                }
+                energie = Energie.FromJSON(msgRecuStroString);
+                gestionMessage.afficheMessage("J'ai bien recu le paquet : " + energie.getNumeroDeLot());
             }
             else
             {
-                if(energie.getTypeEnergie().equals("Gaz"))
-                {
-                    System.out.print("  => Gaz => ");
-                    if(energie.getModeExtraction().equals("Naturel"))
-                    {
-                        System.out.print("Naturel \n");
-                        gazNatuel.add(energie);
-                    }
+                commande = Commande.FromJSON(msgRecuStroString);
+                gestionMessage.afficheMessage("J'ai bien recu la commande : " + commande.getNumeroDeCommande());
+            }
+            
+            
+
+            if(energie.getTypeEnergie().equals("Electricite"))
+                if(energie.getModeExtraction().equals("Nucleaire"))
+                    electriciteNucleaire.add(energie);
+                else
+                    if(energie.getModeExtraction().equals("Eolienne"))
+                        electriciteEolienne.add(energie);
                     else
-                    {
+                        if(energie.getModeExtraction().equals("Charbon"))
+                            electriciteCharbon.add(energie);
+            else
+                if(energie.getTypeEnergie().equals("Gaz"))
+                    if(energie.getModeExtraction().equals("Naturel"))
+                        gazNatuel.add(energie);
+                    else
                         if(energie.getModeExtraction().equals("Butane"))
-                        {
-                            System.out.print("Butane \n");
                             gazButane.add(energie);
-                        }
                         else
-                        {
                             if(energie.getModeExtraction().equals("Propane"))
-                            {
-                                System.out.print("Propane \n");
                                 gazPropoane.add(energie);
-                            }
-                        }
-                    }
-                }else
-                {
+                else
                     if(energie.getTypeEnergie().equals("Petrole"))
-                    {
-                        System.out.print("  => Petrole => ");
                         if(energie.getModeExtraction().equals("Diesel"))
-                        {
-                            System.out.println("Diesel \n");
                             petroleDiesel.add(energie);
-                        }
                         else
-                        {
                             if(energie.getModeExtraction().equals("SP98"))
-                            {
-                                System.out.print("SP98 \n");
                                 petroleSP98.add(energie);
-                            }
                             else
-                            {
                                 if(energie.getModeExtraction().equals("SP95"))
-                                {
-                                    System.out.print("SP95 \n");
                                     petroleSP95.add(energie);
-                                }
-                            }
+            
+            if(commande != null)
+            {
+                String TypeEnergie = commande.getTypeEnergie();
+                int QuantiteDemander = commande.getQuantiteDemander();
+                String ModeExtraction = commande.getModeExtraction();
+
+                Commande reponseCommande = null;
+                int portTare = 0000;
+
+                if(TypeEnergie.equals("Electricite") && ModeExtraction.equals("Nucleaire"))
+                    for( Energie n : electriciteNucleaire)
+                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                        {
+                            reponseCommande = new Commande  (
+                                                                commande.getNumeroDeCommande(),
+                                                                commande.getTypeEnergie(),
+                                                                commande.getModeExtraction(),
+                                                                n.getQuantiteEnvoyer(),
+                                                                n.getQuantiteEnvoyer() * n.getPrixTotals(),
+                                                                n.getNumeroDeLot()
+                                                            );
+                            electriciteNucleaire.remove(n);
                         }
+                        
+                if(TypeEnergie.equals("Electricite") && ModeExtraction.equals("Eolienne"))
+                    for( Energie n : electriciteEolienne)
+                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                        {
+                            reponseCommande = new Commande  (
+                                                                commande.getNumeroDeCommande(),
+                                                                commande.getTypeEnergie(),
+                                                                commande.getModeExtraction(),
+                                                                n.getQuantiteEnvoyer(),
+                                                                n.getQuantiteEnvoyer() * n.getPrixTotals(),
+                                                                n.getNumeroDeLot()
+                                                            );
+                            electriciteEolienne.remove(n);
+                        }
+                if(TypeEnergie.equals("Electricite") && ModeExtraction.equals("Charbon"))
+                    for( Energie n : electriciteCharbon)
+                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                        {
+                            reponseCommande = new Commande (commande.getNumeroDeCommande(),commande.getTypeEnergie(),commande.getModeExtraction(),n.getQuantiteEnvoyer(),n.getQuantiteEnvoyer() * n.getPrixTotals(),n.getNumeroDeLot());
+                            electriciteCharbon.remove(n);
+                        }
+
+                if(TypeEnergie.equals("Gaz") && ModeExtraction.equals("Natuel"))
+                    for( Energie n : gazNatuel)
+                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                        {
+                            reponseCommande = new Commande (commande.getNumeroDeCommande(),commande.getTypeEnergie(),commande.getModeExtraction(),n.getQuantiteEnvoyer(),n.getQuantiteEnvoyer() * n.getPrixTotals(),n.getNumeroDeLot());
+                            gazNatuel.remove(n);
+                        }
+                
+                if(TypeEnergie.equals("Gaz") && ModeExtraction.equals("Butane"))
+                    for( Energie n : gazButane)
+                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                        {
+                            reponseCommande = new Commande (commande.getNumeroDeCommande(),commande.getTypeEnergie(),commande.getModeExtraction(),n.getQuantiteEnvoyer(),n.getQuantiteEnvoyer() * n.getPrixTotals(),n.getNumeroDeLot());
+                            gazButane.remove(n);
+                        }
+                
+                if(TypeEnergie.equals("Gaz") && ModeExtraction.equals("Propane"))
+                    for( Energie n : gazPropoane)
+                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                        {
+                            reponseCommande = new Commande (commande.getNumeroDeCommande(),commande.getTypeEnergie(),commande.getModeExtraction(),n.getQuantiteEnvoyer(),n.getQuantiteEnvoyer() * n.getPrixTotals(),n.getNumeroDeLot());
+                            gazPropoane.remove(n);
+                        }
+
+                if(TypeEnergie.equals("Petrole") && ModeExtraction.equals("Diesel"))
+                    for( Energie n : petroleDiesel)
+                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                        {
+                            reponseCommande = new Commande (commande.getNumeroDeCommande(),commande.getTypeEnergie(),commande.getModeExtraction(),n.getQuantiteEnvoyer(),n.getQuantiteEnvoyer() * n.getPrixTotals(),n.getNumeroDeLot());
+                            petroleDiesel.remove(n);
+                        }
+
+                if(TypeEnergie.equals("Petrole") && ModeExtraction.equals("SP98"))
+                    for( Energie n : petroleSP98)
+                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                        {
+                            reponseCommande = new Commande (commande.getNumeroDeCommande(),commande.getTypeEnergie(),commande.getModeExtraction(),n.getQuantiteEnvoyer(),n.getQuantiteEnvoyer() * n.getPrixTotals(),n.getNumeroDeLot());
+                            petroleSP98.remove(n);
+                        }
+                        
+                if(TypeEnergie.equals("Petrole") && ModeExtraction.equals("SP95"))
+                    for( Energie n : petroleSP95)
+                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                        {
+                            reponseCommande = new Commande (commande.getNumeroDeCommande(),commande.getTypeEnergie(),commande.getModeExtraction(),n.getQuantiteEnvoyer(),n.getQuantiteEnvoyer() * n.getPrixTotals(),n.getNumeroDeLot());
+                            petroleSP95.remove(n);
+                        }
+
+                if(TypeEnergie.equals("Petrole"))
+                    portTare = 1023;
+                else
+                    if(TypeEnergie.equals("Gaz"))
+                        portTare = 1022;
+                    else
+                        if(TypeEnergie.equals("Electricite"))
+                            portTare = 1021;
+
+                if(reponseCommande != null && portTare != 0000)
+                {
+                    try 
+                    {
+                        byte[] donnees = reponseCommande.toString().getBytes();
+
+                        InetAddress adresse = InetAddress.getByName("localhost");
+                        DatagramPacket msg = new DatagramPacket(donnees, donnees.length, adresse, portTare);
+                        socket.send(msg);
+                    } 
+                    catch(UnknownHostException e) 
+                    {
+                        System.err.println("Erreur lors de la création de l'adresse : " + e);
+                        System.exit(0); 
+                    } 
+                    catch(IOException e) 
+                    {
+                        System.err.println("Erreur lors de l'envoi du message : " + e);
+                        System.exit(0);
                     }
+                    
+                    gestionMessage.afficheMessage("J'ai fournis la commande suivant : " + reponseCommande.getNumeroDeCommande());
+                    
+                    socket.close();
                 }
+                
             }
         }
     }

@@ -4,15 +4,15 @@ import org.json.*;
 
 public class Energie {
     private String TypeEnergie;
-    private int QuantiteDemander;
+    private int QuantiteEnvoyer;
     private String ModeExtraction;
     private int PrixTotals;
     private int NumeroDeLot;
 
-    public Energie(int NumeroDeLot, String TypeEnergie,String ModeExtraction,int QuantiteDemander, int PrixTotals) {
+    public Energie(int NumeroDeLot, String TypeEnergie,String ModeExtraction,int QuantiteEnvoyer, int PrixTotals) {
         this.NumeroDeLot = NumeroDeLot;
         this.TypeEnergie = TypeEnergie;
-        this.QuantiteDemander = QuantiteDemander;
+        this.QuantiteEnvoyer = QuantiteEnvoyer;
         this.ModeExtraction = ModeExtraction;
         this.PrixTotals = PrixTotals;
     }
@@ -32,9 +32,9 @@ public class Energie {
         return this.TypeEnergie;
     }
 
-    public int getQuantiteDemander()
+    public int getQuantiteEnvoyer()
     {
-        return this.QuantiteDemander;
+        return this.QuantiteEnvoyer;
     }
     public String getModeExtraction()
     {
@@ -51,7 +51,7 @@ public class Energie {
         JSONObject json = new JSONObject();
         json.put("NumeroDeLot", this.NumeroDeLot);
         json.put("TypeEnergie", this.TypeEnergie);
-        json.put("QuantiteDemander", this.QuantiteDemander);
+        json.put("QuantiteEnvoyer", this.QuantiteEnvoyer);
         json.put("ModeExtraction", this.ModeExtraction);
         json.put("PrixTotals", this.PrixTotals);
 
@@ -63,14 +63,14 @@ public class Energie {
         JSONObject objet = new JSONObject(json);
         int NumeroDeLot = objet.getInt("NumeroDeLot");
         String TypeEnergie = objet.getString("TypeEnergie");
-        int QuantiteDemander = objet.getInt("QuantiteDemander");
+        int QuantiteEnvoyer = objet.getInt("QuantiteEnvoyer");
         String ModeExtraction = objet.getString("ModeExtraction");
         int PrixTotals = objet.getInt("PrixTotals");
         Energie code = new Energie(
                             NumeroDeLot,
                             TypeEnergie, 
                             ModeExtraction, 
-                            QuantiteDemander,
+                            QuantiteEnvoyer,
                             PrixTotals
                             );
 
@@ -83,7 +83,7 @@ public class Energie {
                                 "-  => NumeroDeLot : " + this.NumeroDeLot + "\n" +
                                 "-  => Type Enegie :" + this.TypeEnergie +"\n"+
                                 "-  => Mode extraction :" + this.ModeExtraction +"\n"+
-                                "-  => Quantite Envoyer : " + this.QuantiteDemander +"\n"+
+                                "-  => Quantite Envoyer : " + this.QuantiteEnvoyer +"\n"+
                                 "-  => Prix Total :" + this.PrixTotals+ "\n"
                                 ;
         
