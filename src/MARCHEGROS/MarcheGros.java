@@ -1,40 +1,26 @@
 package MARCHEGROS;
 
-import java.beans.Encoder;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.lang.reflect.Array;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import org.json.JSONObject;
 
 
 import Source.*;
 
 public class MarcheGros implements Runnable{
     
-    private final int portMarcheGros;
+    private int portMarcheGros = 0000;
     private Messenger gestionMessage;
     private int portEcoute = 4012;
-    private int portEcouteTareElectricite = 1021;
-    private int portEcouteTareGaz = 1022;
-    private int portEcouteTarePetrole = 1023;
+
 
     public MarcheGros(int portMarcheGros) 
     {
@@ -45,9 +31,6 @@ public class MarcheGros implements Runnable{
     @Override
     public void run()
     {
-        System.out.println("Serveur MarcheGros started");
-
-        // gestionMessage.afficheMessage("J'ai bien recu le paquet : " + message);
 
         ArrayList<Energie> electriciteNucleaire = new ArrayList<Energie>();
         ArrayList<Energie> electriciteEolienne = new ArrayList<Energie>();
@@ -98,8 +81,9 @@ public class MarcheGros implements Runnable{
             }
             
             
-
-            if(energie.getTypeEnergie().equals("Electricite"))
+            if(energie != null)
+            {
+                if(energie.getTypeEnergie().equals("Electricite"))
                 if(energie.getModeExtraction().equals("Nucleaire"))
                     electriciteNucleaire.add(energie);
                 else
@@ -128,6 +112,7 @@ public class MarcheGros implements Runnable{
                             else
                                 if(energie.getModeExtraction().equals("SP95"))
                                     petroleSP95.add(energie);
+            }
             
             if(commande != null)
             {
