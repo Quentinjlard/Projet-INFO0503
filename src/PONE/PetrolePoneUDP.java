@@ -56,29 +56,17 @@ public class PetrolePoneUDP implements Runnable {
             String ModeExtraction = ListeTypeEnergie[casetableaux];
             int QuantiteDemander =  (int) ((Math.random() * (250 - 50)) + 50);
             int PrixTotals = 5 * QuantiteDemander;
-            Commande commande = new Commande(NumeroDeLot,TypeEnergie, ModeExtraction,QuantiteDemander, PrixTotals);
-            commande.toString();
+            Energie Energie = new Energie(NumeroDeLot,TypeEnergie, ModeExtraction,QuantiteDemander, PrixTotals);
+            Energie.toString();
 
-            JSONObject commandeJson = commande.toJson();
+            JSONObject EnergieJson = Energie.toJson();
             
-
-            // Transformation en tableau d'octets
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            try 
-            {
-                ObjectOutputStream oos = new ObjectOutputStream(baos);
-                oos.writeObject(commandeJson.toString());
-            } 
-            catch(IOException e) 
-            {
-                System.err.println("Erreur lors de la sérialisation : " + e);
-                System.exit(0);
-            }
 
             // Création et envoi du segment UDP
             try 
             {
-                byte[] donnees = baos.toByteArray();
+                byte[] donnees = EnergieJson.toString().getBytes();
+                
                 InetAddress adresse = InetAddress.getByName("localhost");
                 DatagramPacket msg = new DatagramPacket(donnees, donnees.length, adresse, portMarcheGros);
                 socket.send(msg);
@@ -93,7 +81,7 @@ public class PetrolePoneUDP implements Runnable {
                 System.err.println("Erreur lors de l'envoi du message : " + e);
                 System.exit(0);
             }
-            gestionMessage.afficheMessage("J'ai fournis le lot d'energie suivant : " + commande.getNumeroDeLot());
+            gestionMessage.afficheMessage("J'ai fournis le lot d'energie suivant : " + Energie.getNumeroDeLot());
 
             socket.close();
             
