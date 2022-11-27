@@ -125,12 +125,12 @@ public class MarcheGros implements Runnable{
                 Commande reponseCommande = null;
                 int portTare = 0000;
 
-                if(TypeEnergie.equals("Electricite") && ModeExtraction.equals("Nucleaire"))
+                if(TypeEnergie.equals("Electricite") && (ModeExtraction.equals("Nucleaire") || ModeExtraction == null))
                     for (int i = 0; i < electriciteNucleaire.size(); i++)
                         if((electriciteNucleaire.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
                             Energie nrj = electriciteNucleaire.get(i);
-                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(),commande.getQuantiteDemander(),nrj.getQuantiteEnvoyer(),nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(),nrj.getNumeroDeLot());
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(),commande.getQuantiteDemander(),nrj.getQuantiteEnvoyer(),nrj.getPrixUnite(),nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(),nrj.getNumeroDeLot());
                             electriciteNucleaire.remove(nrj);
                         }
                         
@@ -139,7 +139,7 @@ public class MarcheGros implements Runnable{
                         if((electriciteEolienne.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
                             Energie nrj = electriciteEolienne.get(i);
-                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(),nrj.getPrixUnite(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
                             electriciteEolienne.remove(nrj);
                         }
 
@@ -148,7 +148,7 @@ public class MarcheGros implements Runnable{
                         if((electriciteCharbon.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
                             Energie nrj = electriciteCharbon.get(i);
-                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(),nrj.getPrixUnite(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
                             electriciteCharbon.remove(nrj);
                         }
 
@@ -157,7 +157,7 @@ public class MarcheGros implements Runnable{
                         if((gazNatuel.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
                             Energie nrj = gazNatuel.get(i);
-                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(),nrj.getPrixUnite(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
                             gazNatuel.remove(nrj);
                         }
                 
@@ -166,7 +166,7 @@ public class MarcheGros implements Runnable{
                         if((gazButane.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
                             Energie nrj = gazButane.get(i);
-                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(),nrj.getPrixUnite(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
                             gazButane.remove(nrj);
                         }
                 
@@ -175,7 +175,7 @@ public class MarcheGros implements Runnable{
                         if((gazPropoane.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
                             Energie nrj = gazPropoane.get(i);
-                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(),nrj.getPrixUnite(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
                             gazPropoane.remove(nrj);
                         }
 
@@ -184,7 +184,7 @@ public class MarcheGros implements Runnable{
                         if((petroleDiesel.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
                             Energie nrj = petroleDiesel.get(i);
-                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(),nrj.getPrixUnite(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
                             petroleDiesel.remove(nrj);
                         }
 
@@ -193,7 +193,7 @@ public class MarcheGros implements Runnable{
                         if((petroleSP98.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
                             Energie nrj = petroleSP98.get(i);
-                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(),nrj.getPrixUnite(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
                             petroleSP98.remove(nrj);
                         }
                         
@@ -202,7 +202,7 @@ public class MarcheGros implements Runnable{
                         if((petroleSP95.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
                             Energie nrj = petroleSP95.get(i);
-                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(),nrj.getPrixUnite(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
                             petroleSP95.remove(nrj);
                         }
 
@@ -222,6 +222,7 @@ public class MarcheGros implements Runnable{
                                                         commande.getTypeEnergie(),
                                                         commande.getModeExtraction(),
                                                         commande.getQuantiteDemander(),
+                                                        0,
                                                         0,
                                                         0,
                                                         0

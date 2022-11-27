@@ -63,19 +63,19 @@ public class Lanceur {
         // mesServices.add(new Thread(new ServeurTCP(portServeurTCP)));
         // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
 
-        mesServices.add(new Thread(new ElectriciteTareTCP(portElecticiteTareTCP)));
+        mesServices.add(new Thread(new ElectriciteTare(portElecticiteTareTCP)));
         // mesServices.add(new Thread(new ClientTCP(adresseElecticiteTareTCP,portElecticiteTareTCP)));
-        mesServices.add(new Thread(new ElectricitePoneUDP(portElecticitePoneUDP)));
+        mesServices.add(new Thread(new ElectricitePone(portElecticitePoneUDP)));
         // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
 
-        mesServices.add(new Thread(new GazTareTCP(portGazTareTCP)));
+        mesServices.add(new Thread(new GazTare(portGazTareTCP)));
         // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
-        mesServices.add(new Thread(new GazPoneUDP(portGazPoneUDP)));
+        mesServices.add(new Thread(new GazPone(portGazPoneUDP)));
         // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)))
 
-        mesServices.add(new Thread(new PetroleTareTCP(portPetroleTareTCP)));
+        mesServices.add(new Thread(new PetroleTare(portPetroleTareTCP)));
         // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
-        mesServices.add(new Thread(new PetrolePoneUDP(portPetrolePoneUDP)));
+        mesServices.add(new Thread(new PetrolePone(portPetrolePoneUDP)));
         // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
 
         mesServices.add(new Thread(new MarcheGros(portMarcheGros)));

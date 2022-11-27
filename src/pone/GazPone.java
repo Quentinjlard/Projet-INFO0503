@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import source.*;
 
 
-public class GazPoneUDP implements Runnable {
+public class GazPone implements Runnable {
     
 
     private int portGazPoneUDP;
@@ -20,7 +20,7 @@ public class GazPoneUDP implements Runnable {
 
     private int portMarcheGros = 4012;
 
-    public GazPoneUDP(int portGazPoneUDP) 
+    public GazPone(int portGazPoneUDP) 
     {
         this.portGazPoneUDP = portGazPoneUDP;
         this.gestionMessage=new Messenger("PONE - Gaz");

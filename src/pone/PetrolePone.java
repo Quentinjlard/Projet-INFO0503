@@ -1,3 +1,4 @@
+
 package pone;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import org.json.JSONObject;
 import source.*;
 
 
-public class PetrolePoneUDP implements Runnable {
+public class PetrolePone implements Runnable {
 
     private static int portPetrolePoneUDP;
     private Messenger gestionMessage;
@@ -20,7 +21,7 @@ public class PetrolePoneUDP implements Runnable {
     private int portMarcheGros = 4012;
 
 
-    public PetrolePoneUDP(int portPetrolePoneUDP)
+    public PetrolePone(int portPetrolePoneUDP)
     {
         this.portPetrolePoneUDP=portPetrolePoneUDP;
         this.gestionMessage=new Messenger("PONE - Petrole");

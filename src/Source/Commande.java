@@ -8,6 +8,7 @@ public class Commande {
     private int QuantiteDemander;
     private int QuantiteFournis;
     private String ModeExtraction;
+    private int prixUnites;
     private int PrixTotals;
     private int NumeroDeLot;
 
@@ -20,12 +21,13 @@ public class Commande {
      * @param PrixTotals
      * @param NumeroDeLot
      */
-    public Commande(int NumeroDeCommande, String TypeEnergie,String ModeExtraction,int QuantiteDemander, int QuantiteFournis, int PrixTotals, int NumeroDeLot) {
+    public Commande(int NumeroDeCommande, String TypeEnergie,String ModeExtraction,int QuantiteDemander, int QuantiteFournis, int prixUnites, int PrixTotals, int NumeroDeLot) {
         this.NumeroDeCommande = NumeroDeCommande;
         this.TypeEnergie = TypeEnergie;
         this.ModeExtraction = ModeExtraction;
         this.QuantiteDemander = QuantiteDemander;
         this.QuantiteFournis = QuantiteFournis;
+        this.prixUnites = prixUnites;
         this.PrixTotals = PrixTotals;
         this.NumeroDeLot = NumeroDeLot;
     }
@@ -93,6 +95,14 @@ public class Commande {
         return this.PrixTotals;
     }
 
+    public int getQuantiteFournis() {
+        return QuantiteFournis;
+    }
+
+    public int getPrixUnites() {
+        return prixUnites;
+    }
+
     /**
      * 
      * @return
@@ -105,6 +115,7 @@ public class Commande {
         json.put("ModeExtraction", this.ModeExtraction);
         json.put("QuantiteDemander", this.QuantiteDemander);
         json.put("QuantiteFournis", this.QuantiteFournis);
+        json.put("prixUnits", this.prixUnites);
         json.put("PrixTotals", this.PrixTotals);
         json.put("NumeroDeLotPone", this.NumeroDeLot);
 
@@ -124,18 +135,19 @@ public class Commande {
         String ModeExtraction = objet.getString("ModeExtraction");
         int QuantiteDemander = objet.getInt("QuantiteDemander");
         int QuantiteFournis = objet.getInt("QuantiteFournis");
+        int PrixUnits = objet.getInt("PrixUnits");
         int PrixTotals = objet.getInt("PrixTotals");
         int NumeroDeLot = objet.getInt("NumeroDeLotPone");
         Commande commande = new Commande(
                             NumeroDeCommande,
                             TypeEnergie, 
                             ModeExtraction, 
-                            QuantiteFournis,
                             QuantiteDemander,
+                            QuantiteFournis,
+                            PrixUnits,
                             PrixTotals,
                             NumeroDeLot
                             );
-
         return commande;
     }
 

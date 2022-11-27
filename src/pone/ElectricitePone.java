@@ -11,14 +11,14 @@ import org.json.JSONObject;
 
 import source.*;
 
-public class ElectricitePoneUDP implements Runnable {
+public class ElectricitePone implements Runnable {
     
     private int portElectricPoneUDP;
     private Messenger gestionMessage;
 
     private int portMarcheGros = 4012;
 
-    public ElectricitePoneUDP(int portElectricPoneUDP)
+    public ElectricitePone(int portElectricPoneUDP)
     {
         this.portElectricPoneUDP = portElectricPoneUDP;
         this.gestionMessage=new Messenger("PONE - Electricite");
