@@ -1,86 +1,136 @@
-package Source;
+package source;
 
 import org.json.*;
 
 public class Commande {
-    private int numeroDeCommande;
+    private int NumeroDeCommande;
     private String TypeEnergie;
     private int QuantiteDemander;
+    private int QuantiteFournis;
     private String ModeExtraction;
     private int PrixTotals;
     private int NumeroDeLot;
 
-    public Commande(int numeroDeCommande, String TypeEnergie,String ModeExtraction,int QuantiteDemander, int PrixTotals, int NumeroDeLot) {
-        this.numeroDeCommande = numeroDeCommande;
+    /**
+     * 
+     * @param NumeroDeCommande
+     * @param TypeEnergie
+     * @param ModeExtraction
+     * @param QuantiteDemander
+     * @param PrixTotals
+     * @param NumeroDeLot
+     */
+    public Commande(int NumeroDeCommande, String TypeEnergie,String ModeExtraction,int QuantiteDemander, int QuantiteFournis, int PrixTotals, int NumeroDeLot) {
+        this.NumeroDeCommande = NumeroDeCommande;
         this.TypeEnergie = TypeEnergie;
-        this.QuantiteDemander = QuantiteDemander;
         this.ModeExtraction = ModeExtraction;
+        this.QuantiteDemander = QuantiteDemander;
+        this.QuantiteFournis = QuantiteFournis;
         this.PrixTotals = PrixTotals;
-        if(NumeroDeLot == 0)
-            this.NumeroDeLot = -1;
-        else
-            this.NumeroDeLot = NumeroDeLot;
+        this.NumeroDeLot = NumeroDeLot;
     }
 
+    /**
+     * 
+     * @param reference
+     * @return
+     */
     public static String[] Split(String reference)
     {
         String[] partiRef = reference.split("&");
         return partiRef;
     }
 
+    /**
+     * 
+     * @return
+     */
     public int getNumeroDeCommande() {
-        return numeroDeCommande;
+        return NumeroDeCommande;
     }
 
+    /**
+     * 
+     * @return
+     */
     public int getNumeroDeLot() {
         return NumeroDeLot;
     }
 
+    /**
+     * 
+     * @return
+     */
     public String getTypeEnergie()
     {
         return this.TypeEnergie;
     }
 
+    /**
+     * 
+     * @return
+     */
     public int getQuantiteDemander()
     {
         return this.QuantiteDemander;
     }
+
+    /**
+     * 
+     * @return
+     */
     public String getModeExtraction()
     {
         return this.ModeExtraction;
     }
     
+    /**
+     * 
+     * @return
+     */
     public int getPrixTotals()
     {
         return this.PrixTotals;
     }
 
+    /**
+     * 
+     * @return
+     */
     public JSONObject toJson()
     {
         JSONObject json = new JSONObject();
-        json.put("NumeroDeCommande", this.numeroDeCommande);
+        json.put("NumeroDeCommande", this.NumeroDeCommande);
         json.put("TypeEnergie", this.TypeEnergie);
-        json.put("QuantiteDemander", this.QuantiteDemander);
         json.put("ModeExtraction", this.ModeExtraction);
+        json.put("QuantiteDemander", this.QuantiteDemander);
+        json.put("QuantiteFournis", this.QuantiteFournis);
         json.put("PrixTotals", this.PrixTotals);
-        json.put("NumeroDeLot", this.NumeroDeLot);
+        json.put("NumeroDeLotPone", this.NumeroDeLot);
 
         return json;
     }
 
+    /**
+     * 
+     * @param json
+     * @return
+     */
     public static Commande FromJSON(String json)
     {
         JSONObject objet = new JSONObject(json);
-        int numeroDeCommande = objet.getInt("NumeroDeCommande");
+        int NumeroDeCommande = objet.getInt("NumeroDeCommande");
         String TypeEnergie = objet.getString("TypeEnergie");
-        int QuantiteDemander = objet.getInt("QuantiteDemander");
         String ModeExtraction = objet.getString("ModeExtraction");
+        int QuantiteDemander = objet.getInt("QuantiteDemander");
+        int QuantiteFournis = objet.getInt("QuantiteFournis");
         int PrixTotals = objet.getInt("PrixTotals");
-        int NumeroDeLot = objet.getInt("NumeroDeLot");
+        int NumeroDeLot = objet.getInt("NumeroDeLotPone");
         Commande commande = new Commande(
-                            numeroDeCommande,
+                            NumeroDeCommande,
                             TypeEnergie, 
                             ModeExtraction, 
+                            QuantiteFournis,
                             QuantiteDemander,
                             PrixTotals,
                             NumeroDeLot
@@ -89,16 +139,18 @@ public class Commande {
         return commande;
     }
 
+    /**
+     * 
+     */
     @Override
     public String toString() {
-            System.out.println("\n"+
-                                "-  => NumeroDeCommande : " + this.numeroDeCommande + "\n" +
+        return ("\n"+
+                                "-  => NumeroDeCommande : " + this.NumeroDeCommande + "\n" +
                                 "-  => Type Enegie :" + this.TypeEnergie +"\n"+
                                 "-  => Mode extraction :" + this.ModeExtraction +"\n"+
                                 "-  => Quantite Envoyer : " + this.QuantiteDemander +"\n"+
                                 "-  => Prix Total :" + this.PrixTotals+ "\n" +
                                 "-  => NumeroDeLot : " + this.NumeroDeLot + "\n" 
                                 );
-        return super.toString();
     }
 }

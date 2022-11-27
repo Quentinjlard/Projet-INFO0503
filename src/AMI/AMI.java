@@ -1,6 +1,6 @@
-package AMI;
+package ami;
 
-import Source.*;
+import source.*;
 
 public class AMI implements Runnable{
 
@@ -11,7 +11,7 @@ public class AMI implements Runnable{
     public AMI(int portAMI)
     {
         this.portAMI = portAMI;
-        this.gestionMessage=new Messenger("Serveur AMI");
+        this.gestionMessage=new Messenger("AMI ");
     }
 
     @Override

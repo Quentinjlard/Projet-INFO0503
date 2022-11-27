@@ -1,7 +1,6 @@
-package PONE;
-import java.io.ByteArrayOutputStream;
+package pone;
+
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -10,7 +9,7 @@ import java.net.UnknownHostException;
 
 import org.json.JSONObject;
 
-import Source.*;
+import source.*;
 
 public class ElectricitePoneUDP implements Runnable {
     
@@ -22,7 +21,7 @@ public class ElectricitePoneUDP implements Runnable {
     public ElectricitePoneUDP(int portElectricPoneUDP)
     {
         this.portElectricPoneUDP = portElectricPoneUDP;
-        this.gestionMessage=new Messenger("ElectricitePONEUDP");
+        this.gestionMessage=new Messenger("PONE - Electricite");
     }
 
     @Override
@@ -42,7 +41,7 @@ public class ElectricitePoneUDP implements Runnable {
             } 
             catch(SocketException e) 
             {
-                System.err.println("Erreur lors de la création du socket : " + e);
+                gestionMessage.afficheMessage("Erreur lors de la création du socket : " + e);
                 System.exit(0);
             }
             i++;
@@ -51,10 +50,10 @@ public class ElectricitePoneUDP implements Runnable {
             int casetableaux = (int) ((Math.random() * (2 - 0)) + 0);
             String TypeEnergie ="Electricite";
             String ModeExtraction = ListeTypeEnergie[casetableaux];
-            int QuantiteDemander =  (int) ((Math.random() * (250 - 50)) + 50);
-            int PrixTotals = 5 * QuantiteDemander;
-            Energie Energie = new Energie(NumeroDeLot,TypeEnergie, ModeExtraction,QuantiteDemander, PrixTotals);
-            Energie.toString();
+            int QuantiteEnvoyer =  (int) ((Math.random() * (250 - 50)) + 50);
+            int PrixUnite = (int) ((Math.random() * (250 - 10)) + 10);
+            Energie Energie = new Energie(NumeroDeLot,TypeEnergie, ModeExtraction,QuantiteEnvoyer, PrixUnite);
+            System.out.println(Energie);
 
             JSONObject EnergieJson = Energie.toJson();
 
@@ -69,12 +68,12 @@ public class ElectricitePoneUDP implements Runnable {
             } 
             catch(UnknownHostException e) 
             {
-                System.err.println("Erreur lors de la création de l'adresse : " + e);
+                gestionMessage.afficheMessage("Erreur lors de la création de l'adresse : " + e);
                 System.exit(0); 
             } 
             catch(IOException e) 
             {
-                System.err.println("Erreur lors de l'envoi du message : " + e);
+                gestionMessage.afficheMessage("Erreur lors de l'envoi du message : " + e);
                 System.exit(0);
             }
             gestionMessage.afficheMessage("J'ai fournis le lot d'energie suivant : " + Energie.getNumeroDeLot());
@@ -82,7 +81,7 @@ public class ElectricitePoneUDP implements Runnable {
             socket.close();
             
             try {
-                Thread.sleep(30000);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

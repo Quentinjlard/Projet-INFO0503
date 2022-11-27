@@ -1,18 +1,6 @@
-package TARE;
+package tare;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.PrintWriter;
-
-import java.net.ServerSocket;
-import java.net.Socket;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -21,9 +9,7 @@ import java.net.UnknownHostException;
 
 import org.json.JSONObject;
 
-import org.json.JSONObject;
-
-import Source.Messenger;
+import source.*;
 
 public class ElectriciteTareTCP implements Runnable{
     
@@ -33,7 +19,7 @@ public class ElectriciteTareTCP implements Runnable{
 
     public ElectriciteTareTCP(int portServeurTCP) {
         this.portServeurTCP=portServeurTCP;
-        this.gestionMessage=new Messenger("ElectriciteTARETCP");
+        this.gestionMessage=new Messenger("TARE - Electricite");
     }
 
     @Override
@@ -42,108 +28,84 @@ public class ElectriciteTareTCP implements Runnable{
         System.out.println("Serveur ElectriciteTareTCP started");
 
 
-        // // Reception d une requete en TCP
+        /**
+         * 
+         * PARTIE TCP
+         * 
+         */
 
-        // ServerSocket socketServeur = null;
-        // try {    
-        //     socketServeur = new ServerSocket(portServeurTCP);
-        // } catch(IOException e) {
-        //     System.err.println("Création de la socket impossible : " + e);
-        //     System.exit(0);
-        // }
+        /**
+          * PARTIE UDP
+          */
 
-        // Socket socketClient = null;
-        // try {
-        //     socketClient = socketServeur.accept();
-        // } catch(IOException e) {
-        //     System.err.println("Erreur lors de l'attente d'une connexion : " + e);
-        //     System.exit(0);
-        // }
+        while(true)
+        {
 
-        // BufferedReader input = null;
-        // PrintWriter output = null;
-        // try {
-        //     input = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
-        // } catch(IOException e) {
-        //     System.err.println("Association des flux impossible : " + e);
-        //     System.exit(0);
-        // }
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        // JSONObject commandeJSon;
-        
-        // try {
-        //     // Faire le FromJSON
+        // Création de la socket
+        DatagramSocket socket = null;
+        try {        
+            socket = new DatagramSocket(1021);
+        } catch(SocketException e) {
+            gestionMessage.afficheMessage("Erreur lors de la création de la socket : " + e);
+            System.exit(0);
+        }
+
+        int NumeroDeCommande = 1;
+        String TypeEnergie = "Electricite";
+        String ModeExtraction = "Nucleaire";
+        int QuantiteDemander = 1;
+        int QuantiteFournis = 0;
+        int PrixTotals = 0; 
+        int NumeroDeLot = 0;
+    
+        Commande commande = new Commande(NumeroDeCommande, TypeEnergie, ModeExtraction, QuantiteFournis, QuantiteDemander, PrixTotals, NumeroDeLot);
+        JSONObject commandeJson = commande.toJson();
+
+        try 
+        {
+            byte[] donnees = commandeJson.toString().getBytes();
             
-        // // } catch(IOException e) {
-        //     // System.err.println("Erreur lors de la lecture : " + e);
-        //     // System.exit(0);
-        // // }
-        // // gestionMessage.afficheMessage("Demande reçu par le TARE Electricite" + message);
-        
-        // try {
-        //     input.close();
-        //     output.close();
-        //     socketClient.close();
-        //     socketServeur.close();
-        // } catch(IOException e) {
-        //     System.err.println("Erreur lors de la fermeture des flux et des sockets : " + e);
-        //     System.exit(0);
-        // }
+            InetAddress adresse = InetAddress.getByName("localhost");
+            DatagramPacket msg = new DatagramPacket(donnees, donnees.length, adresse, portMarcheGros);
+            socket.send(msg);
+        } 
+        catch(UnknownHostException e) 
+        {
+            gestionMessage.afficheMessage("Erreur lors de la création de l'adresse : " + e);
+            System.exit(0); 
+        } 
+        catch(IOException e) 
+        {
+            gestionMessage.afficheMessage("Erreur lors de l'envoi du message : " + e);
+            System.exit(0);
+        }
+        gestionMessage.afficheMessage("J'ai envoyé une commande : " + commande.getNumeroDeCommande());
 
         
-        // // Socket en UDP
 
-        // // Création de la socket
-        // DatagramSocket socket = null;
-        // try 
-        // {
-        //     socket = new DatagramSocket();
-        // } 
-        // catch(SocketException e) 
-        // {
-        //     System.err.println("Erreur lors de la création du socket : " + e);
-        //     System.exit(0);
-        // }
-        // // Transformation en tableau d'octets
-        
-        // ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        // try 
-        // {
-        //     ObjectOutputStream oos = new ObjectOutputStream(baos);
-        //     // oos.writeObject(JSON.toString());
-        // } 
-        // catch(IOException e) 
-        // {
-        //     System.err.println("Erreur lors de la sérialisation : " + e);
-        //     System.exit(0);
-        // }
+        // Lecture du message du client
+        DatagramPacket msgRecu = null;
+        try {
+            byte[] tampon = new byte[1024];
+            msgRecu = new DatagramPacket(tampon, tampon.length);
+            socket.receive(msgRecu);
+        } catch(IOException e) {
+            gestionMessage.afficheMessage("Erreur lors de la réception du message : " + e);
+            System.exit(0);
+        }
 
-        // // Création et envoi du segment UDP
-        // try 
-        // {
-        //     byte[] donnees = baos.toByteArray();
-        //     InetAddress adresse = InetAddress.getByName("localhost");
-        //     DatagramPacket msg = new DatagramPacket(donnees, donnees.length, adresse, portMarcheGros);
-        //     socket.send(msg);
-        // } 
-        // catch(UnknownHostException e) 
-        // {
-        //     System.err.println("Erreur lors de la création de l'adresse : " + e);
-        //     System.exit(0); 
-        // } 
-        // catch(IOException e) 
-        // {
-        //     System.err.println("Erreur lors de l'envoi du message : " + e);
-        //     System.exit(0);
-        // }
-        // // gestionMessage.afficheMessage("J'ai fournis le lot d'energie suivant : " + commande.getNumeroDeLot());
+        String msgRecuStroString = new String(msgRecu.getData());
+        commande = Commande.FromJSON(msgRecuStroString);
+        System.out.println(commande);
+        gestionMessage.afficheMessage("J'ai bien recu la reponse commande : " + commande.getNumeroDeCommande());
 
-        // socket.close();
-            
-        // try {
-        //     Thread.sleep(30000);
-        // } catch (InterruptedException e) {
-        //     e.printStackTrace();
-        // }
+        socket.close();
+    }
     }
 }

@@ -1,4 +1,4 @@
-package Source;
+package source;
 /**
  * Classe permettant de créer/gérer un fichier de configuration.
  * @author Cyril Rabat (10/2018) et J.-C. Boisson (11/2022)

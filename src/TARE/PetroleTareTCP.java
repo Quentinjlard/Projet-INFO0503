@@ -1,6 +1,6 @@
-package TARE;
+package tare;
 
-import Source.*;
+import source.*;
 
 public class PetroleTareTCP  implements Runnable {
     
@@ -9,7 +9,7 @@ public class PetroleTareTCP  implements Runnable {
 
     public PetroleTareTCP(int portServeurTCP) {
         this.portServeurTCP=portServeurTCP;
-        this.gestionMessage=new Messenger("PetroleTARETCP");
+        this.gestionMessage=new Messenger("TARE - Petrole");
     }
 
     @Override

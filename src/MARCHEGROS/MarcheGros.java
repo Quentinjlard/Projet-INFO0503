@@ -1,4 +1,4 @@
-package MARCHEGROS;
+package marchegros;
 
 
 import java.io.IOException;
@@ -10,10 +10,11 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.json.JSONObject;
 
-
-import Source.*;
+import source.*;
 
 public class MarcheGros implements Runnable{
     
@@ -25,35 +26,36 @@ public class MarcheGros implements Runnable{
     public MarcheGros(int portMarcheGros) 
     {
         this.portMarcheGros = portMarcheGros;
-        this.gestionMessage=new Messenger("Serveur Marche Gros");
+        this.gestionMessage=new Messenger("MarcheGros");
     }
 
     @Override
     public void run()
     {
 
-        ArrayList<Energie> electriciteNucleaire = new ArrayList<Energie>();
-        ArrayList<Energie> electriciteEolienne = new ArrayList<Energie>();
-        ArrayList<Energie> electriciteCharbon = new ArrayList<Energie>();
-        ArrayList<Energie> gazNatuel = new ArrayList<Energie>();
-        ArrayList<Energie> gazPropoane = new ArrayList<Energie>();
-        ArrayList<Energie> gazButane = new ArrayList<Energie>();
-        ArrayList<Energie> petroleDiesel = new ArrayList<Energie>();
-        ArrayList<Energie> petroleSP95 = new ArrayList<Energie>();
-        ArrayList<Energie> petroleSP98 = new ArrayList<Energie>();
+        List<Energie> electriciteNucleaire = new ArrayList<Energie>();
+        List<Energie> electriciteEolienne = new ArrayList<Energie>();
+        List<Energie> electriciteCharbon = new ArrayList<Energie>();
+        List<Energie> gazNatuel = new ArrayList<Energie>();
+        List<Energie> gazPropoane = new ArrayList<Energie>();
+        List<Energie> gazButane = new ArrayList<Energie>();
+        List<Energie> petroleDiesel = new ArrayList<Energie>();
+        List<Energie> petroleSP95 = new ArrayList<Energie>();
+        List<Energie> petroleSP98 = new ArrayList<Energie>();
 
-        // Création de la socket
-        DatagramSocket socket = null;
-        try {        
-            socket = new DatagramSocket(portEcoute);
-        } catch(SocketException e) {
-            System.err.println("Erreur lors de la création de la socket : " + e);
-            System.exit(0);
-        }
+        
 
-        // Lecture du message du client
         while(true)
         {
+            // Création de la socket
+            DatagramSocket socket = null;
+            try {        
+                socket = new DatagramSocket(portEcoute);
+            } catch(SocketException e) {
+                gestionMessage.afficheMessage("Erreur lors de la création de la socket : " + e);
+                System.exit(0);
+            }
+
             // Lecture du message du client
             DatagramPacket msgRecu = null;
             try {
@@ -61,7 +63,7 @@ public class MarcheGros implements Runnable{
                 msgRecu = new DatagramPacket(tampon, tampon.length);
                 socket.receive(msgRecu);
             } catch(IOException e) {
-                System.err.println("Erreur lors de la réception du message : " + e);
+                gestionMessage.afficheMessage("Erreur lors de la réception du message : " + e);
                 System.exit(0);
             }
             String msgRecuStroString = new String(msgRecu.getData());
@@ -124,88 +126,84 @@ public class MarcheGros implements Runnable{
                 int portTare = 0000;
 
                 if(TypeEnergie.equals("Electricite") && ModeExtraction.equals("Nucleaire"))
-                    for( Energie n : electriciteNucleaire)
-                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                    for (int i = 0; i < electriciteNucleaire.size(); i++)
+                        if((electriciteNucleaire.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
-                            reponseCommande = new Commande  (
-                                                                commande.getNumeroDeCommande(),
-                                                                commande.getTypeEnergie(),
-                                                                commande.getModeExtraction(),
-                                                                n.getQuantiteEnvoyer(),
-                                                                n.getQuantiteEnvoyer() * n.getPrixTotals(),
-                                                                n.getNumeroDeLot()
-                                                            );
-                            electriciteNucleaire.remove(n);
+                            Energie nrj = electriciteNucleaire.get(i);
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(),commande.getQuantiteDemander(),nrj.getQuantiteEnvoyer(),nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(),nrj.getNumeroDeLot());
+                            electriciteNucleaire.remove(nrj);
                         }
                         
                 if(TypeEnergie.equals("Electricite") && ModeExtraction.equals("Eolienne"))
-                    for( Energie n : electriciteEolienne)
-                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                    for (int i = 0; i < electriciteEolienne.size(); i++)
+                        if((electriciteEolienne.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
-                            reponseCommande = new Commande  (
-                                                                commande.getNumeroDeCommande(),
-                                                                commande.getTypeEnergie(),
-                                                                commande.getModeExtraction(),
-                                                                n.getQuantiteEnvoyer(),
-                                                                n.getQuantiteEnvoyer() * n.getPrixTotals(),
-                                                                n.getNumeroDeLot()
-                                                            );
-                            electriciteEolienne.remove(n);
+                            Energie nrj = electriciteEolienne.get(i);
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            electriciteEolienne.remove(nrj);
                         }
+
                 if(TypeEnergie.equals("Electricite") && ModeExtraction.equals("Charbon"))
-                    for( Energie n : electriciteCharbon)
-                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                    for (int i = 0; i < electriciteCharbon.size(); i++)
+                        if((electriciteCharbon.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
-                            reponseCommande = new Commande (commande.getNumeroDeCommande(),commande.getTypeEnergie(),commande.getModeExtraction(),n.getQuantiteEnvoyer(),n.getQuantiteEnvoyer() * n.getPrixTotals(),n.getNumeroDeLot());
-                            electriciteCharbon.remove(n);
+                            Energie nrj = electriciteCharbon.get(i);
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            electriciteCharbon.remove(nrj);
                         }
 
                 if(TypeEnergie.equals("Gaz") && ModeExtraction.equals("Natuel"))
-                    for( Energie n : gazNatuel)
-                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                    for (int i = 0; i < gazNatuel.size(); i++)
+                        if((gazNatuel.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
-                            reponseCommande = new Commande (commande.getNumeroDeCommande(),commande.getTypeEnergie(),commande.getModeExtraction(),n.getQuantiteEnvoyer(),n.getQuantiteEnvoyer() * n.getPrixTotals(),n.getNumeroDeLot());
-                            gazNatuel.remove(n);
+                            Energie nrj = gazNatuel.get(i);
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            gazNatuel.remove(nrj);
                         }
                 
                 if(TypeEnergie.equals("Gaz") && ModeExtraction.equals("Butane"))
-                    for( Energie n : gazButane)
-                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                    for (int i = 0; i < gazButane.size(); i++)
+                        if((gazButane.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
-                            reponseCommande = new Commande (commande.getNumeroDeCommande(),commande.getTypeEnergie(),commande.getModeExtraction(),n.getQuantiteEnvoyer(),n.getQuantiteEnvoyer() * n.getPrixTotals(),n.getNumeroDeLot());
-                            gazButane.remove(n);
+                            Energie nrj = gazButane.get(i);
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            gazButane.remove(nrj);
                         }
                 
                 if(TypeEnergie.equals("Gaz") && ModeExtraction.equals("Propane"))
-                    for( Energie n : gazPropoane)
-                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                    for (int i = 0; i < gazPropoane.size(); i++)
+                        if((gazPropoane.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
-                            reponseCommande = new Commande (commande.getNumeroDeCommande(),commande.getTypeEnergie(),commande.getModeExtraction(),n.getQuantiteEnvoyer(),n.getQuantiteEnvoyer() * n.getPrixTotals(),n.getNumeroDeLot());
-                            gazPropoane.remove(n);
+                            Energie nrj = gazPropoane.get(i);
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            gazPropoane.remove(nrj);
                         }
 
                 if(TypeEnergie.equals("Petrole") && ModeExtraction.equals("Diesel"))
-                    for( Energie n : petroleDiesel)
-                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                    for (int i = 0; i < petroleDiesel.size(); i++)
+                        if((petroleDiesel.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
-                            reponseCommande = new Commande (commande.getNumeroDeCommande(),commande.getTypeEnergie(),commande.getModeExtraction(),n.getQuantiteEnvoyer(),n.getQuantiteEnvoyer() * n.getPrixTotals(),n.getNumeroDeLot());
-                            petroleDiesel.remove(n);
+                            Energie nrj = petroleDiesel.get(i);
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            petroleDiesel.remove(nrj);
                         }
 
                 if(TypeEnergie.equals("Petrole") && ModeExtraction.equals("SP98"))
-                    for( Energie n : petroleSP98)
-                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                    for (int i = 0; i < petroleSP98.size(); i++)
+                        if((petroleSP98.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
-                            reponseCommande = new Commande (commande.getNumeroDeCommande(),commande.getTypeEnergie(),commande.getModeExtraction(),n.getQuantiteEnvoyer(),n.getQuantiteEnvoyer() * n.getPrixTotals(),n.getNumeroDeLot());
-                            petroleSP98.remove(n);
+                            Energie nrj = petroleSP98.get(i);
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            petroleSP98.remove(nrj);
                         }
                         
                 if(TypeEnergie.equals("Petrole") && ModeExtraction.equals("SP95"))
-                    for( Energie n : petroleSP95)
-                        if(n.getQuantiteEnvoyer() >= QuantiteDemander)
+                    for (int i = 0; i < petroleSP95.size(); i++)
+                        if((petroleSP95.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
-                            reponseCommande = new Commande (commande.getNumeroDeCommande(),commande.getTypeEnergie(),commande.getModeExtraction(),n.getQuantiteEnvoyer(),n.getQuantiteEnvoyer() * n.getPrixTotals(),n.getNumeroDeLot());
-                            petroleSP95.remove(n);
+                            Energie nrj = petroleSP95.get(i);
+                            reponseCommande = new Commande  ( commande.getNumeroDeCommande(), commande.getTypeEnergie(), commande.getModeExtraction(), commande.getQuantiteDemander(), nrj.getQuantiteEnvoyer(), nrj.getQuantiteEnvoyer() * nrj.getPrixUnite(), nrj.getNumeroDeLot());
+                            petroleSP95.remove(nrj);
                         }
 
                 if(TypeEnergie.equals("Petrole"))
@@ -217,33 +215,46 @@ public class MarcheGros implements Runnable{
                         if(TypeEnergie.equals("Electricite"))
                             portTare = 1021;
 
-                if(reponseCommande != null && portTare != 0000)
+                if(reponseCommande == null)
                 {
-                    try 
-                    {
-                        byte[] donnees = reponseCommande.toString().getBytes();
+                    reponseCommande = new Commande  (
+                                                        commande.getNumeroDeCommande() ,
+                                                        commande.getTypeEnergie(),
+                                                        commande.getModeExtraction(),
+                                                        commande.getQuantiteDemander(),
+                                                        0,
+                                                        0,
+                                                        0
+                                                    );
+                }
 
-                        InetAddress adresse = InetAddress.getByName("localhost");
-                        DatagramPacket msg = new DatagramPacket(donnees, donnees.length, adresse, portTare);
-                        socket.send(msg);
-                    } 
-                    catch(UnknownHostException e) 
-                    {
-                        System.err.println("Erreur lors de la création de l'adresse : " + e);
-                        System.exit(0); 
-                    } 
-                    catch(IOException e) 
-                    {
-                        System.err.println("Erreur lors de l'envoi du message : " + e);
-                        System.exit(0);
-                    }
-                    
-                    gestionMessage.afficheMessage("J'ai fournis la commande suivant : " + reponseCommande.getNumeroDeCommande());
-                    
-                    socket.close();
+                JSONObject reponseCommandeJson = reponseCommande.toJson();
+
+                try 
+                {
+                    byte[] donnees = reponseCommandeJson.toString().getBytes();
+
+                    InetAddress adresse = InetAddress.getByName("localhost");
+                    DatagramPacket msg = new DatagramPacket(donnees, donnees.length, adresse, portTare);
+                    socket.send(msg);
+                } 
+                catch(UnknownHostException e) 
+                {
+                    gestionMessage.afficheMessage("Erreur lors de la création de l'adresse : " + e);
+                    System.exit(0); 
+                } 
+                catch(IOException e) 
+                {
+                    gestionMessage.afficheMessage("Erreur lors de l'envoi du message : " + e);
+                    System.exit(0);
                 }
                 
+                gestionMessage.afficheMessage("J'ai fournis la commande suivant : " + reponseCommande.getNumeroDeCommande());
+                    
+                
             }
+            socket.close();
         }
+        
     }
 }

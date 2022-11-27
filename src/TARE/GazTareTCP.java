@@ -1,6 +1,6 @@
-package TARE;
+package tare;
 
-import Source.*;
+import source.*;
 public class GazTareTCP implements Runnable {
     
     private int portServeurTCP;
@@ -8,7 +8,7 @@ public class GazTareTCP implements Runnable {
 
     public GazTareTCP(int portServeurTCP) {
         this.portServeurTCP=portServeurTCP;
-        this.gestionMessage=new Messenger("GazTARETCP");
+        this.gestionMessage=new Messenger("TARE - Gaz");
     }
 
     @Override

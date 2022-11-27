@@ -1,4 +1,4 @@
-package Source;
+package source;
 
 import org.json.*;
 import java.util.Scanner;

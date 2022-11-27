@@ -1,4 +1,4 @@
-package Source;
+package source;
 
 import org.json.*;
 
@@ -6,15 +6,15 @@ public class Energie {
     private String TypeEnergie;
     private int QuantiteEnvoyer;
     private String ModeExtraction;
-    private int PrixTotals;
+    private int PrixUnite;
     private int NumeroDeLot;
 
-    public Energie(int NumeroDeLot, String TypeEnergie,String ModeExtraction,int QuantiteEnvoyer, int PrixTotals) {
+    public Energie(int NumeroDeLot, String TypeEnergie,String ModeExtraction,int QuantiteEnvoyer, int PrixUnite) {
         this.NumeroDeLot = NumeroDeLot;
         this.TypeEnergie = TypeEnergie;
         this.QuantiteEnvoyer = QuantiteEnvoyer;
         this.ModeExtraction = ModeExtraction;
-        this.PrixTotals = PrixTotals;
+        this.PrixUnite= PrixUnite;
     }
 
     public static String[] Split(String reference)
@@ -41,9 +41,9 @@ public class Energie {
         return this.ModeExtraction;
     }
     
-    public int getPrixTotals()
+    public int getPrixUnite()
     {
-        return this.PrixTotals;
+        return this.PrixUnite;
     }
 
     public JSONObject toJson()
@@ -53,7 +53,7 @@ public class Energie {
         json.put("TypeEnergie", this.TypeEnergie);
         json.put("QuantiteEnvoyer", this.QuantiteEnvoyer);
         json.put("ModeExtraction", this.ModeExtraction);
-        json.put("PrixTotals", this.PrixTotals);
+        json.put("PrixUnite", this.PrixUnite);
 
         return json;
     }
@@ -65,13 +65,13 @@ public class Energie {
         String TypeEnergie = objet.getString("TypeEnergie");
         int QuantiteEnvoyer = objet.getInt("QuantiteEnvoyer");
         String ModeExtraction = objet.getString("ModeExtraction");
-        int PrixTotals = objet.getInt("PrixTotals");
+        int PrixUnite = objet.getInt("PrixUnite");
         Energie code = new Energie(
                             NumeroDeLot,
                             TypeEnergie, 
                             ModeExtraction, 
                             QuantiteEnvoyer,
-                            PrixTotals
+                            PrixUnite
                             );
 
         return code;
@@ -84,7 +84,7 @@ public class Energie {
                                 "-  => Type Enegie :" + this.TypeEnergie +"\n"+
                                 "-  => Mode extraction :" + this.ModeExtraction +"\n"+
                                 "-  => Quantite Envoyer : " + this.QuantiteEnvoyer +"\n"+
-                                "-  => Prix Total :" + this.PrixTotals+ "\n"
+                                "-  => Prix Unité :" + this.PrixUnite+ "\n"
                                 ;
         
     }

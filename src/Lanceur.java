@@ -1,13 +1,10 @@
-import PONE.PetrolePoneUDP;
-import Source.ClientTCP;
-import Source.Configuration;
-import Source.ServeurTCP;
-
-
-import TARE.*;
-import MARCHEGROS.*;
-import PONE.*;
-import AMI.*;
+import ami.*;
+import marchegros.*;
+import pone.*;
+import source.ClientTCP;
+import source.Configuration;
+import source.ServeurTCP;
+import tare.*;
 
 /**
  * Lanceur de test pour démarrer une communication TCP (basé sur la fiche 1 du TP sur la communication TCP).

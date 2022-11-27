@@ -1,4 +1,4 @@
-package Source;
+package source;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.InputStreamReader;

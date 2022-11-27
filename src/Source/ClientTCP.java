@@ -1,4 +1,4 @@
-package Source;
+package source;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.InputStreamReader;
@@ -9,7 +9,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import Source.Messenger;
 
 /**
  * Classe correspondant à un client TCP <em>Runnable</em>.

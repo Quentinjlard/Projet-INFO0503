@@ -1,4 +1,4 @@
-package Source;
+package source;
 /**
  * Classe pour gérer l'affichage de messages dans System.out avec un préfixe.
  * 
@@ -33,7 +33,7 @@ public class Messenger {
         this.prefix  = this.delimAV+" "+this.id+" "+delimAP+" : ";
     }
 
-     /**
+    /**
      * Constructeur pour renseigner l'identité choisie avec des délimiteurs choisis (identiques)
      * 
      * @param id Le nom choisi pour l'identité
