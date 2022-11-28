@@ -43,6 +43,7 @@ public class ElectriciteTare implements Runnable{
          * PARTIE TCP
          * 
          */
+        
 
         // Création de la socket
         Socket socketTCP = null;
@@ -165,18 +166,7 @@ public class ElectriciteTare implements Runnable{
          * Partie UDP
          */
 
-        HttpServer serveur = null;
-        try {
-            serveur = HttpServer.create(new InetSocketAddress(80), 0);
-        } catch(IOException e) {
-            gestionMessage.afficheMessage("Erreur lors de la création du serveur " + e);
-            System.exit(0);
-        }
 
-        serveur.createContext("/index", (HttpHandler) new Revendeur());
-        serveur.setExecutor(null);
-        serveur.start();
-        
 
     }
 }

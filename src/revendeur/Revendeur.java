@@ -1,6 +1,7 @@
-package revendeur;
+package src.revendeur;
 
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.Headers;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -9,7 +10,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 
-public class Revendeur implements HttpHandler{
+
+public class Revendeur implements HttpHandler {
 
     public void handle(HttpExchange t) {
 
@@ -85,5 +87,5 @@ public class Revendeur implements HttpHandler{
             System.err.println("Erreur lors de l'envoi du corps : " + e);
         }
     }
-
 }
+

@@ -1,6 +1,7 @@
 import ami.*;
 import marchegros.*;
 import pone.*;
+import revendeur.Revendeur2;
 import source.ClientTCP;
 import source.Configuration;
 import source.ServeurTCP;
@@ -57,6 +58,9 @@ public class Lanceur {
         String adresseAMI = config.getString("adresseAMI");
         int portAMI = config.getInt("portAMI");
 
+        String adresseRevendeur = config.getString("adresseRevendeur");
+        int portRevendeur = config.getInt("portRevendeur");
+
         java.util.ArrayList<Thread> mesServices = new java.util.ArrayList<Thread>();
 
 	// On doit donner une référence d'objet implémentant l'interface Runnable pour créer un Thread 
@@ -82,6 +86,9 @@ public class Lanceur {
         // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
 
         mesServices.add(new Thread(new AMI(portAMI)));
+        // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
+
+        mesServices.add(new Thread(new Revendeur2(portRevendeur)));
         // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
 
 

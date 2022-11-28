@@ -21,6 +21,9 @@
     "portMarcheGros":4012,
 
     "adresseAMI":"localhost",
-    "portAMI":6000
+    "portAMI":6000,
+
+    "adresseRevendeur":"localhost",
+    "portRevendeur":8080
     
 }
