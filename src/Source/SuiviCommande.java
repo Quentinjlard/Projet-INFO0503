@@ -90,19 +90,16 @@ public class SuiviCommande implements Serializable
     public static SuiviCommande FromJSON(String json)
     {
         JSONObject objet = new JSONObject(json);
+        
         int IdClient = objet.getInt("IdClient");
         int IdRevendeur = objet.getInt("IdRevendeur");
         int IdTare = objet.getInt("IdTare");
-
         int numeroDeCommande = objet.getInt("NumeroDeCommande");
         int numerodDeLot = objet.getInt("NumerodDeLot");
-
         String typeEnergie = objet.getString("TypeEnergie");
         String modeExtraction = objet.getString("ModeExtraction");
-
         int quantiteDemander = objet.getInt("QuantiteDemande");
         int quantiteEnvoyer = objet.getInt("QuantiteEnvoyer");
-
         int prixUnites = objet.getInt("PrixUnits");
         int prixTotal = objet.getInt("PrixTotals");
 

@@ -8,13 +8,18 @@ import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.HttpContext;
+import com.sun.net.httpserver.HttpHandler;
 
 import org.json.JSONObject;
 
 import source.*;
+import revendeur.Revendeur;
 
 public class ElectriciteTare implements Runnable{
     
@@ -30,9 +35,9 @@ public class ElectriciteTare implements Runnable{
     @Override
     public void run()
     {
-        System.out.println("Serveur ElectriciteTareTCP started");
+        gestionMessage.afficheMessage("Started");
 
-
+        
         /**
          * 
          * PARTIE TCP
@@ -42,24 +47,32 @@ public class ElectriciteTare implements Runnable{
         // Création de la socket
         Socket socketTCP = null;
         try {
-            socketTCP = new Socket("localhost", 8080);
+            socketTCP = new Socket("localhost", 80);
         } catch(UnknownHostException e) {
-            gestionMessage.afficheMessage("Erreur sur l'hôte : " + e);
+            gestionMessage.afficheMessage("SOCKETTCP - Erreur sur l'hôte : " + e);
             System.exit(0);
         } catch(IOException e) {
-            gestionMessage.afficheMessage("Création de la socket impossible : " + e);
+            gestionMessage.afficheMessage("SOCKETTCP - Création de la socket impossible : " + e);
+            System.exit(0);
+        }
+
+        // Association d'un flux d'entrée et de sortie
+        BufferedReader input = null;
+        try {
+            input = new BufferedReader(new InputStreamReader(socketTCP.getInputStream()));
+        } catch(IOException e) {
+            System.err.println("Association des flux impossible : " + e);
             System.exit(0);
         }
 
         //Recuepere mon suiviCommande
         SuiviCommande suiviCommandeEntrante = null;
         try {
-            InputStream var = socketTCP.getInputStream();
-            InputStreamReader var2 = new InputStreamReader(var);
-            BufferedReader var3 = new BufferedReader(var2);
-            suiviCommandeEntrante = SuiviCommande.FromJSON(var3.toString());
+            String commande = input.readLine();
+            suiviCommandeEntrante = SuiviCommande.FromJSON(commande.toString());
+
         } catch(IOException e) {
-            gestionMessage.afficheMessage("Erreur lors de la lecture : " + e);
+            gestionMessage.afficheMessage("SuiviCommandeEntrante - Erreur lors de la lecture : " + e);
             System.exit(0);
         }
 
@@ -78,7 +91,7 @@ public class ElectriciteTare implements Runnable{
         try {        
             socketUDP = new DatagramSocket(1021);
         } catch(SocketException e) {
-            gestionMessage.afficheMessage("Erreur lors de la création de la socket : " + e);
+            gestionMessage.afficheMessage("socketUDP - Erreur lors de la création de la socket : " + e);
             System.exit(0);
         }
 
@@ -147,6 +160,24 @@ public class ElectriciteTare implements Runnable{
                                                         );
 
         socketUDP.close();
+
+        /**
+         * Partie UDP
+         */
+
+        HttpServer serveur = null;
+        try {
+            serveur = HttpServer.create(new InetSocketAddress(80), 0);
+        } catch(IOException e) {
+            gestionMessage.afficheMessage("Erreur lors de la création du serveur " + e);
+            System.exit(0);
+        }
+
+        serveur.createContext("/index", (HttpHandler) new Revendeur());
+        serveur.setExecutor(null);
+        serveur.start();
+        
+
     }
 }
 

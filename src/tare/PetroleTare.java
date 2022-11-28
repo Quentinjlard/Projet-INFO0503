@@ -25,8 +25,8 @@ public class PetroleTare  implements Runnable {
     @Override
     public void run()
     {
-        System.out.println("Serveur PetroleTareTCP started");
-
+        gestionMessage.afficheMessage("Started");
+        
         // Création de la socket
         DatagramSocket socket = null;
         try {        

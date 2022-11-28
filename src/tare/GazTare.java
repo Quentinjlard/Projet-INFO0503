@@ -24,8 +24,8 @@ public class GazTare implements Runnable {
     @Override
     public void run()
     {
-        System.out.println("Serveur GazTareTCP started");
-
+        gestionMessage.afficheMessage("Started");
+        
         // Création de la socket
         DatagramSocket socket = null;
         try {        

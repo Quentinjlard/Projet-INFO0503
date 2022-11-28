@@ -18,8 +18,7 @@
         private int $prixTotal;
 
         //Constructeur
-        public function __construct($idClient,$idRevendeur,$idTare,$numeroDeCommande,$numerodDeLot,$typeEnergie,$modeExtraction,$quantiteDemander,$quantiteEnvoyer,$prixUnites,$prixTotal
-        )
+        public function __construct($idClient,$idRevendeur,$idTare,$numeroDeCommande,$numerodDeLot,$typeEnergie,$modeExtraction,$quantiteDemander,$quantiteEnvoyer,$prixUnites,$prixTotal)
         {    
             $this->$idClient= $idClient;
             $this->$idRevendeur= $idRevendeur;

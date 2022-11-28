@@ -26,10 +26,15 @@
                     <Label class = "form-group">Mode d'extraction souhaité :</Label>
                         <select name="extraction" id = "extraction" required="required" class = "form-control">
                             <option value="Aucune restriction">Aucune restriction</option>
-                            <option value="nucleaire">Nucléaire</option>
-                            <option value="hydrolique">Hydrolique</option>
-                            <option value="thermique">Thermique</option>
-                            <option value="forage">Forage</option>
+                            <option value="Nucleaire">Electicité - Nucleaire</option>
+                            <option value="Eolienne">Electicité - Eolienne</option>
+                            <option value="Charbon">Electicité - Charbon</option>
+                            <option value="Naturel">Gaz - Naturel</option>
+                            <option value="Propane">Gaz - Propane</option>
+                            <option value="Butane">Gaz - Butane</option>
+                            <option value="Diesel"> Petrole - Diesel</option>
+                            <option value="SP98"> Petrole - SP98</option>
+                            <option value="SP95"> Petrole - SP95</option>
                         </select>
                 </div>
                 <br>
@@ -38,10 +43,7 @@
                     <input name="quantite" id="quantite" type="number" min="1" max ="99999" placeholder="20000" required="required" class="form-control">
                 </div>
                 <br>
-                <div class ="form-group">
-                    <label for="budget" class="form-group"> Budget maximal : </label>
-                    <input  name="budget" id="budget" type="number"  min="1" max="99999" placeholder="1000" required="required" class="form-control">
-                </div>
+                
                 <br>
                 <div>
                 <input class="btn btn-primary" type="submit" name="submit" value="Commander">

@@ -30,7 +30,8 @@ public class PetrolePone implements Runnable {
     @Override
     public void run() 
     {
-
+        gestionMessage.afficheMessage("Started");
+        
         // Création de la requete energie
         int i = 0;
         while(true)

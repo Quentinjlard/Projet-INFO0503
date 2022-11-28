@@ -33,6 +33,8 @@ public class MarcheGros implements Runnable{
     public void run()
     {
 
+        gestionMessage.afficheMessage("Started");
+        
         List<Energie> electriciteNucleaire = new ArrayList<Energie>();
         List<Energie> electriciteEolienne = new ArrayList<Energie>();
         List<Energie> electriciteCharbon = new ArrayList<Energie>();
@@ -125,7 +127,7 @@ public class MarcheGros implements Runnable{
                 Commande reponseCommande = null;
                 int portTare = 0000;
 
-                if(TypeEnergie.equals("Electricite") && (ModeExtraction.equals("Nucleaire") || ModeExtraction == null))
+                if(TypeEnergie.equals("Electricite") && (ModeExtraction.equals("Nucleaire") || ModeExtraction.equals("Aucune restriction")))
                     for (int i = 0; i < electriciteNucleaire.size(); i++)
                         if((electriciteNucleaire.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
@@ -152,7 +154,7 @@ public class MarcheGros implements Runnable{
                             electriciteCharbon.remove(nrj);
                         }
 
-                if(TypeEnergie.equals("Gaz") && ModeExtraction.equals("Natuel"))
+                if(TypeEnergie.equals("Gaz") && (ModeExtraction.equals("Natuel") || ModeExtraction.equals("Aucune restriction")))
                     for (int i = 0; i < gazNatuel.size(); i++)
                         if((gazNatuel.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
@@ -179,7 +181,7 @@ public class MarcheGros implements Runnable{
                             gazPropoane.remove(nrj);
                         }
 
-                if(TypeEnergie.equals("Petrole") && ModeExtraction.equals("Diesel"))
+                if(TypeEnergie.equals("Petrole") && (ModeExtraction.equals("Diesel") || ModeExtraction.equals("Aucune restriction")))
                     for (int i = 0; i < petroleDiesel.size(); i++)
                         if((petroleDiesel.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {

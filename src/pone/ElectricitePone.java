@@ -27,8 +27,8 @@ public class ElectricitePone implements Runnable {
     @Override
     public void run()
     {
-        // System.out.println("Serveur ElectricitePoneUDP started");
-
+        gestionMessage.afficheMessage("Started");
+        
         // Création de la requete energie
         int i = 0;
         while(true)
@@ -53,7 +53,6 @@ public class ElectricitePone implements Runnable {
             int QuantiteEnvoyer =  (int) ((Math.random() * (250 - 50)) + 50);
             int PrixUnite = (int) ((Math.random() * (250 - 10)) + 10);
             Energie Energie = new Energie(NumeroDeLot,TypeEnergie, ModeExtraction,QuantiteEnvoyer, PrixUnite);
-            System.out.println(Energie);
 
             JSONObject EnergieJson = Energie.toJson();
 

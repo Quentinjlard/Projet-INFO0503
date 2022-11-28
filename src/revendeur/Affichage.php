@@ -14,11 +14,23 @@
         
 <?php
 
-    if (isset($_POST["Energie"]) && $_POST["Energie"]!= "" && isset($_POST["extraction"]) && $_POST["extraction"]  != "" && isset($_POST["quantite"]) && $_POST["quantite"] != 0 && isset($_POST["budget"]) && $_POST["budget"] != 0) {
+    if (isset($_POST["Energie"]) && $_POST["Energie"]!= "" && isset($_POST["extraction"]) && $_POST["extraction"]  != "" && isset($_POST["quantite"]) && $_POST["quantite"]  != "") {
 
         //Affichage de l'objet commande
         echo "<br><br><br>Objet commande créé :<br>" ;
-        $commande = new Commande($_POST["Energie"],$_POST["extraction"],$_POST["quantite"],$_POST["budget"]);
+        $commande = new Commande(
+                                    1,
+                                    -1,
+                                    -1,
+                                    -1,
+                                    -1,
+                                    $_POST["Energie"],
+                                    $_POST["extraction"],
+                                    $_POST["quantite"],
+                                    -1,
+                                    -1
+                                    -1,
+                                );
         echo $commande;
         
         $json_encode_commande = json_encode($commande);
