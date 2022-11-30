@@ -1,9 +1,11 @@
 package tare;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -15,11 +17,12 @@ import java.net.UnknownHostException;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpHandler;
+import java.io.OutputStreamWriter;
 
 import org.json.JSONObject;
 
 import source.*;
-import revendeur.Revendeur;
+import revendeur.*;
 
 public class ElectriciteTare implements Runnable{
     
@@ -48,7 +51,7 @@ public class ElectriciteTare implements Runnable{
         // Création de la socket
         Socket socketTCP = null;
         try {
-            socketTCP = new Socket("localhost", 80);
+            socketTCP = new Socket("localhost", 8080);
         } catch(UnknownHostException e) {
             gestionMessage.afficheMessage("SOCKETTCP - Erreur sur l'hôte : " + e);
             System.exit(0);
@@ -62,7 +65,7 @@ public class ElectriciteTare implements Runnable{
         try {
             input = new BufferedReader(new InputStreamReader(socketTCP.getInputStream()));
         } catch(IOException e) {
-            System.err.println("Association des flux impossible : " + e);
+            gestionMessage.afficheMessage("Association des flux impossible : " + e);
             System.exit(0);
         }
 
@@ -74,6 +77,14 @@ public class ElectriciteTare implements Runnable{
 
         } catch(IOException e) {
             gestionMessage.afficheMessage("SuiviCommandeEntrante - Erreur lors de la lecture : " + e);
+            System.exit(0);
+        }
+
+        try {
+            socketTCP.close();
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            gestionMessage.afficheMessage("Erreur lors de la fermeture des flux et de la socket : " + e1);
             System.exit(0);
         }
 
@@ -166,7 +177,35 @@ public class ElectriciteTare implements Runnable{
          * Partie UDP
          */
 
+        Socket socketTCPRetour = null;
+        try {
+            socketTCPRetour = new Socket("localhost", 9999);
+        } catch(UnknownHostException e) {
+            gestionMessage.afficheMessage("SOCKETTCP - Erreur sur l'hôte : " + e);
+            System.exit(0);
+        } catch(IOException e) {
+            gestionMessage.afficheMessage("SOCKETTCP - Création de la socket impossible : " + e);
+            System.exit(0);
+        }
 
+        // Association d'un flux d'entrée et de sortie
+        PrintWriter output = null;
+        try {
+            output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socketTCPRetour.getOutputStream())), true);
+        } catch(IOException e) {
+            gestionMessage.afficheMessage("Association des flux impossible : " + e);
+            System.exit(0);
+        }
+
+        JSONObject suiviCommandeJSON = suiviCommande.toJson();
+        output.println(suiviCommandeJSON);
+
+        try {
+            socketTCPRetour.close();
+        } catch (IOException e1) {
+            gestionMessage.afficheMessage("Erreur lors de la fermeture des flux et de la socket : " + e1);
+            System.exit(0);
+        }
 
     }
 }

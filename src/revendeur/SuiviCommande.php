@@ -3,7 +3,7 @@
     #author Romain Cogné (romain.cogne@etudiant.univ-reims.fr)
     #author Quentin Juilliard (quentin.juilliard@etudiant.univ-reims.fr)
 
-    class Commande implements JsonSerializable{
+    class SuiviCommande implements JsonSerializable{
         //Variables
         private int $idClient;
         private int $idRevendeur;
@@ -32,6 +32,52 @@
             $this->$prixUnites= $prixUnites;
             $this->$prixTotal= $prixTotal;
         }
+
+        public function getIdClient()
+        {
+            return $this->idClient;
+        }
+        public function getIdRevendeur()
+        {
+            return $this->idRevendeur;
+        }
+        public function getIdTare()
+        {
+            return $this->idTare;
+        }
+        public function getNumeroDeCommande()
+        {
+            return $this->numeroDeCommande;
+        }
+        public function getNumerodDeLot()
+        {
+            return $this->numerodDeLot;
+        }
+        public function getTypeEnergie()
+        {
+            return $this->typeEnergie;
+        }
+        public function getModeExtraction()
+        {
+            return $this->modeExtraction;
+        }
+        public function getQuantiteDemander()
+        {
+            return $this->getQuantiteDemander;
+        }
+        public function getQuantiteEnvoyer()
+        {
+            return $this->quantiteEnvoyer;
+        }
+        public function getPrixUnites()
+        {
+            return $this->prixUnites;
+        }
+        public function getPrixTotal()
+        {
+            return $this->prixTotal;
+        }
+
 
         //Pour sérialiser l'objet
         public function jsonSerialize() : array 
@@ -99,10 +145,10 @@
         }
 
         //Créattion de la socket d'envoie
-        public function envoieSocket($commande)
+        public function envoieSocket()
         {
             $host    = "localhost";
-            switch ($commande->energie) 
+            switch ($this->commande->energie) 
             {
                 case 'Electricite':
                     $port = 1021;
@@ -121,15 +167,19 @@
             }
             
 
-            echo "Message au serveur :".$commande;
+            echo "Message au serveur :".$this->commande;
             
+            $data = urlencode(json_encode($this->commandes));
+
             $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Impossible de créer un socket\n");
             $resultat = socket_connect($socket, $host, $port) or die("Impossible de se connecter au serveur\n"); 
-            socket_write($socket, $message, strlen($message)) or die("Impossible d'envoyer des données au serveur\n");
+            socket_write($socket, $data, strlen($data)) or die("Impossible d'envoyer des données au serveur\n");
             $resultat = socket_read ($socket, $port) or die("Impossible de lire la réponse du serveur\n");
             echo "Réponse du serveur   :".$resultat;
             
             socket_close($socket);
+
+            return $resultat;
         }
         
     }

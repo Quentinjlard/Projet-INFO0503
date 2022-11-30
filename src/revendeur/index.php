@@ -1,7 +1,8 @@
 <?php
-    include("Commande.php");
+    include("SuiviCommande.php");
     #author Romain Cogné (romain.cogne@etudiant.univ-reims.fr)
     #author Quentin Juilliard (quentin.juilliard@etudiant.univ-reims.fr)
+    
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +15,7 @@
     <body>
         <div class="container">
             <H2>Passer une commande</H2>
-            <form action="http://localhost:8080/index" method="POST" >
+            <form action="Traitement.php" method="POST" >
                 <div>
                     <label for="Energie" class="form-group"> Type d'énergie voulu :</label>
                         <select name="Energie" id="Energie" required="required" class="form-control">

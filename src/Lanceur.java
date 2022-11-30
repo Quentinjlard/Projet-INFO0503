@@ -1,7 +1,7 @@
 import ami.*;
 import marchegros.*;
 import pone.*;
-import revendeur.Revendeur2;
+import revendeur.Revendeur;
 import source.ClientTCP;
 import source.Configuration;
 import source.ServeurTCP;
@@ -88,7 +88,7 @@ public class Lanceur {
         mesServices.add(new Thread(new AMI(portAMI)));
         // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
 
-        mesServices.add(new Thread(new Revendeur2(portRevendeur)));
+        mesServices.add(new Thread(new Revendeur(portRevendeur)));
         // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
 
 
