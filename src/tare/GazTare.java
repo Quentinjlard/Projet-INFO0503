@@ -1,39 +1,38 @@
 package tare;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import com.sun.net.httpserver.HttpServer;
+import java.net.InetSocketAddress;
 
-import org.json.JSONObject;
-
-import source.*;
+import source.Messenger;
 
 public class GazTare implements Runnable {
     
-    private int portServeurTCP;
+    private int portServeurUDP;
     private Messenger gestionMessage;
 
-    public GazTare(int portServeurTCP) {
-        this.portServeurTCP=portServeurTCP;
+    public GazTare(int portServeurUDP) {
+        this.portServeurUDP=portServeurUDP;
         this.gestionMessage=new Messenger("TARE - Gaz");
     }
-
+    
     @Override
-    public void run()
+    public void run() 
     {
         gestionMessage.afficheMessage("Started");
-        
-        // Création de la socket
-        DatagramSocket socket = null;
-        try {        
-            socket = new DatagramSocket(1022);
-        } catch(SocketException e) {
-            gestionMessage.afficheMessage("Erreur lors de la création de la socket : " + e);
+
+        HttpServer serveur = null;
+        try {
+            serveur = HttpServer.create(new InetSocketAddress(1022), 0);
+        } catch(IOException e) {
+            System.err.println("Erreur lors de la crÃ©ation du serveur " + e);
             System.exit(0);
         }
 
+        serveur.createContext("/index", new GazHandler());
+        serveur.setExecutor(null);
+        serveur.start();
+
     }
+    
 }

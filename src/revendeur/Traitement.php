@@ -21,18 +21,18 @@
         echo $_POST["extraction"];
         echo "<br>";
         echo $_POST["quantite"];
-        echo "<br>";
+        echo "<br> ";
 
         //Affichage de l'objet commande
         echo "<br><br><br>Objet commande créé :<br>" ;
-        $commande = new SuiviCommande(1, -1, -1, -1, -1, $_POST["Energie"], $_POST["extraction"], $_POST["quantite"], -1, -1, -1);
-        echo $commande;
+        $commande = new SuiviCommande(1, 0, 0, 0, 0, $_POST["Energie"], $_POST["extraction"], $_POST["quantite"], 0, 0, 0);
+        var_dump($commande);
         
         $json_encode_commande = json_encode($commande);
         echo "<br/> <br/>";
         echo $json_encode_commande;
 
-        $json_fromJson_commande = Commande::fromJson(json_decode($json_encode_commande, true));
+        $json_fromJson_commande = SuiviCommande::fromJson(json_decode($json_encode_commande, true));
         echo "<br/> <br/>";
         echo $json_fromJson_commande;
 

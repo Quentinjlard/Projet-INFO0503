@@ -20,17 +20,18 @@
         //Constructeur
         public function __construct($idClient,$idRevendeur,$idTare,$numeroDeCommande,$numerodDeLot,$typeEnergie,$modeExtraction,$quantiteDemander,$quantiteEnvoyer,$prixUnites,$prixTotal)
         {    
-            $this->$idClient= $idClient;
-            $this->$idRevendeur= $idRevendeur;
-            $this->$idTare= $idTare;
-            $this->$numeroDeCommande= $numeroDeCommande;
-            $this->$numerodDeLot= $numerodDeLot;
-            $this->$typeEnergie= $typeEnergie;
-            $this->$modeExtraction= $modeExtraction;
-            $this->$quantiteDemander= $quantiteDemander;
-            $this->$quantiteEnvoyer= $quantiteEnvoyer;
-            $this->$prixUnites= $prixUnites;
-            $this->$prixTotal= $prixTotal;
+            $this->idClient= $idClient;
+            $this->idRevendeur= $idRevendeur;
+            $this->idTare= $idTare;
+            $this->numeroDeCommande= $numeroDeCommande;
+            $this->numerodDeLot= $numerodDeLot;
+            $this->typeEnergie= $typeEnergie;
+            $this->modeExtraction= $modeExtraction;
+            $this->quantiteDemander= $quantiteDemander;
+            $this->quantiteEnvoyer= $quantiteEnvoyer;
+            $this->prixUnites= $prixUnites;
+            $this->prixTotal= $prixTotal;
+            
         }
 
         public function getIdClient()
@@ -83,22 +84,22 @@
         public function jsonSerialize() : array 
         {
             return [
-                "IdClient"=>$this->$idClient,
-                "IdRevendeur"=>$this->$idRevendeur,
-                "IdTare"=>$this->$idTare,
-                "NumeroDeCommande"=>$this->$numeroDeCommande,
-                "NumeroDeLot"=>$this->$numerodDeLot,
-                "TypeEnergie"=>$this->$typeEnergie,
-                "ModeExtraction"=>$this->$modeExtraction,
-                "QuantiteDemander"=>$this->$quantiteDemander,
-                "QuantiteEnvoyer"=>$this->$quantiteEnvoyer,
-                "PrixUnites"=>$this->$prixUnites,
-                "PrixTotal"=>$this->$prixTotal,
+                "IdClient"=>$this->idClient,
+                "IdRevendeur"=>$this->idRevendeur,
+                "IdTare"=>$this->idTare,
+                "NumeroDeCommande"=>$this->numeroDeCommande,
+                "NumeroDeLot"=>$this->numerodDeLot,
+                "TypeEnergie"=>$this->typeEnergie,
+                "ModeExtraction"=>$this->modeExtraction,
+                "QuantiteDemander"=>$this->quantiteDemander,
+                "QuantiteEnvoyer"=>$this->quantiteEnvoyer,
+                "PrixUnites"=>$this->prixUnites,
+                "PrixTotal"=>$this->prixTotal,
             ];
         }
 
         // decode un Json 
-        public static function fromJson(array $arr) : Commande 
+        public static function fromJson(array $arr) : SuiviCommande 
         {   
             $idClient = $arr['IdClient'];
             $idRevendeur = $arr['IdRevendeur'];
@@ -112,7 +113,7 @@
             $prixUnites = $arr['PrixUnites'];
             $prixTotal = $arr['PrixTotal'];
 
-            return new Commande (
+            return new SuiviCommande (
                                     $idClient,
                                     $idRevendeur,
                                     $idTare,
@@ -147,8 +148,9 @@
         //Créattion de la socket d'envoie
         public function envoieSocket()
         {
-            $host    = "localhost";
-            switch ($this->commande->energie) 
+            
+            echo $this->typeEnergie;
+            switch ($this->typeEnergie) 
             {
                 case 'Electricite':
                     $port = 1021;
@@ -165,14 +167,22 @@
                 default :
                     break;
             }
-            
 
-            echo "Message au serveur :".$this->commande;
+            $host    = "localhost";
+            echo "<br/>";
+            echo $host;
             
-            $data = urlencode(json_encode($this->commandes));
+            echo " <br/> Message au serveur :";
+            var_dump($this);
+            
+            $data = urlencode($this);
+
+            echo $data;
 
             $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Impossible de créer un socket\n");
+            echo "<br/> Socket : "  .  $socket . "<br/>";
             $resultat = socket_connect($socket, $host, $port) or die("Impossible de se connecter au serveur\n"); 
+            echo "<br/> Resultat : "  .  $resultat . "<br/>";
             socket_write($socket, $data, strlen($data)) or die("Impossible d'envoyer des données au serveur\n");
             $resultat = socket_read ($socket, $port) or die("Impossible de lire la réponse du serveur\n");
             echo "Réponse du serveur   :".$resultat;

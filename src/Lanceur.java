@@ -1,10 +1,7 @@
 import ami.*;
 import marchegros.*;
 import pone.*;
-import revendeur.Revendeur;
-import source.ClientTCP;
 import source.Configuration;
-import source.ServeurTCP;
 import tare.*;
 
 /**
@@ -37,59 +34,38 @@ public class Lanceur {
         String adresseServeurTCP = config.getString("adresseServeurTCP");
         int portServeurTCP       = config.getInt("portServeurTCP");
 
-        String adresseElecticiteTareTCP = config.getString("adresseElecticiteTareTCP");
-        int portElecticiteTareTCP = config.getInt( "portElecticiteTareTCP");
-        String adresseElecticitePoneUDP = config.getString("adresseElecticitePoneUDP");
+        int portElecticiteTareUDP = config.getInt( "portElecticiteTareUDP");
         int portElecticitePoneUDP = config.getInt("portElecticitePoneUDP");
 
-        String adresseGazTareTCP = config.getString("adresseGazTareTCP");
-        int portGazTareTCP = config.getInt("portGazTareTCP");
-        String adresseGazPoneUDP = config.getString("adresseGazPoneUDP");
+        int portGazTareUDP = config.getInt("portGazTareUDP");
         int portGazPoneUDP = config.getInt("portGazPoneUDP");
 
-        String adressePetroleTareTCP = config.getString("adressePetroleTareTCP");
-        int portPetroleTareTCP = config.getInt("portPetroleTareTCP");
-        String adressePetrolePoneUDP = config.getString("adressePetrolePoneUDP");
+        int portPetroleTareUDP = config.getInt("portPetroleTareUDP");
         int portPetrolePoneUDP = config.getInt("portPetrolePoneUDP");
 
-        String adresseMarcheGros = config.getString("adresseMarcheGros");
         int portMarcheGros = config.getInt("portMarcheGros");
 
-        String adresseAMI = config.getString("adresseAMI");
         int portAMI = config.getInt("portAMI");
-
-        String adresseRevendeur = config.getString("adresseRevendeur");
-        int portRevendeur = config.getInt("portRevendeur");
 
         java.util.ArrayList<Thread> mesServices = new java.util.ArrayList<Thread>();
 
 	// On doit donner une référence d'objet implémentant l'interface Runnable pour créer un Thread 
-        // mesServices.add(new Thread(new ServeurTCP(portServeurTCP)));
-        // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
+        // mesServices.add(new Thread(new ServeurUDP(portServeurUDP)));
+        // mesServices.add(new Thread(new ClientUDP(adresseServeurUDP,portServeurUDP)));
 
-        mesServices.add(new Thread(new ElectriciteTare(portElecticiteTareTCP)));
-        // mesServices.add(new Thread(new ClientTCP(adresseElecticiteTareTCP,portElecticiteTareTCP)));
+        mesServices.add(new Thread(new ElectriciteTare(portElecticiteTareUDP)));
         mesServices.add(new Thread(new ElectricitePone(portElecticitePoneUDP)));
-        // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
 
-        mesServices.add(new Thread(new GazTare(portGazTareTCP)));
-        // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
+        mesServices.add(new Thread(new GazTare(portGazTareUDP)));
         mesServices.add(new Thread(new GazPone(portGazPoneUDP)));
-        // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)))
 
-        mesServices.add(new Thread(new PetroleTare(portPetroleTareTCP)));
-        // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
+        mesServices.add(new Thread(new PetroleTare(portPetroleTareUDP)));
         mesServices.add(new Thread(new PetrolePone(portPetrolePoneUDP)));
-        // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
 
         mesServices.add(new Thread(new MarcheGros(portMarcheGros)));
-        // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
 
         mesServices.add(new Thread(new AMI(portAMI)));
-        // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
 
-        mesServices.add(new Thread(new Revendeur(portRevendeur)));
-        // mesServices.add(new Thread(new ClientTCP(adresseServeurTCP,portServeurTCP)));
 
 
         java.util.Iterator<Thread> it=mesServices.iterator();
