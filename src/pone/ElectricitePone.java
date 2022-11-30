@@ -60,7 +60,6 @@ public class ElectricitePone implements Runnable {
             try 
             {
                 byte[] donnees = EnergieJson.toString().getBytes();
-                
                 InetAddress adresse = InetAddress.getByName("localhost");
                 DatagramPacket msg = new DatagramPacket(donnees, donnees.length, adresse, portMarcheGros);
                 socket.send(msg);

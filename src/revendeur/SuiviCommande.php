@@ -64,7 +64,7 @@
         }
         public function getQuantiteDemander()
         {
-            return $this->getQuantiteDemander;
+            return $this->quantiteDemander;
         }
         public function getQuantiteEnvoyer()
         {
@@ -146,10 +146,8 @@
         }
 
         //Créattion de la socket d'envoie
-        public function envoieSocket()
-        {
-            
-            echo $this->typeEnergie;
+        public function envoieSocket(){
+
             switch ($this->typeEnergie) 
             {
                 case 'Electricite':
@@ -168,28 +166,24 @@
                     break;
             }
 
-            $host    = "localhost";
-            echo "<br/>";
-            echo $host;
+            $data = urlencode(json_encode($this));
             
-            echo " <br/> Message au serveur :";
-            var_dump($this);
-            
-            $data = urlencode($this);
+            $options = [
+                'http' =>
+                [
+                    'method'  => 'POST',
+                    'header'  => 'Content-type: application/x-www-form-urlencoded',
+                    'content' => $data
+                ]
+            ];
+            // Envoi de la requête et lecture du JSON reçu
+            $URL = "http://localhost:".$port."/traitement";
+            //echo $URL . "<br/>";
+            $contexte  = stream_context_create($options);
+            $jsonTexte = @file_get_contents($URL, false, $contexte);
+            //echo "JSON TEXTE => " . $jsonTexte;
 
-            echo $data;
-
-            $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Impossible de créer un socket\n");
-            echo "<br/> Socket : "  .  $socket . "<br/>";
-            $resultat = socket_connect($socket, $host, $port) or die("Impossible de se connecter au serveur\n"); 
-            echo "<br/> Resultat : "  .  $resultat . "<br/>";
-            socket_write($socket, $data, strlen($data)) or die("Impossible d'envoyer des données au serveur\n");
-            $resultat = socket_read ($socket, $port) or die("Impossible de lire la réponse du serveur\n");
-            echo "Réponse du serveur   :".$resultat;
-            
-            socket_close($socket);
-
-            return $resultat;
+            return $jsonTexte;
         }
         
     }

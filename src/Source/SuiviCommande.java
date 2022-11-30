@@ -76,13 +76,13 @@ public class SuiviCommande implements Serializable
         json.put("IdRevendeur", this.idRevendeur);
         json.put("IdTare", this.idTare);
         json.put("NumeroDeCommande", this.numeroDeCommande);
-        json.put("NumerodDeLot", this.numerodDeLot);
+        json.put("NumeroDeLot", this.numerodDeLot);
         json.put("TypeEnergie", this.typeEnergie);
         json.put("ModeExtraction", this.modeExtraction);
-        json.put("QuantiteDemande", this.quantiteDemander);
+        json.put("QuantiteDemander", this.quantiteDemander);
         json.put("QuantiteEnvoyer", this.quantiteEnvoyer);
-        json.put("PrixUnits", this.prixUnites);
-        json.put("PrixTotals", this.prixTotal);
+        json.put("PrixUnites", this.prixUnites);
+        json.put("PrixTotal", this.prixTotal);
 
         return json;
     }
@@ -90,18 +90,18 @@ public class SuiviCommande implements Serializable
     public static SuiviCommande FromJSON(String json)
     {
         JSONObject objet = new JSONObject(json);
-        
+
         int IdClient = objet.getInt("IdClient");
         int IdRevendeur = objet.getInt("IdRevendeur");
         int IdTare = objet.getInt("IdTare");
         int numeroDeCommande = objet.getInt("NumeroDeCommande");
-        int numerodDeLot = objet.getInt("NumerodDeLot");
+        int numerodDeLot = objet.getInt("NumeroDeLot");
         String typeEnergie = objet.getString("TypeEnergie");
         String modeExtraction = objet.getString("ModeExtraction");
-        int quantiteDemander = objet.getInt("QuantiteDemande");
+        int quantiteDemander = objet.getInt("QuantiteDemander");
         int quantiteEnvoyer = objet.getInt("QuantiteEnvoyer");
-        int prixUnites = objet.getInt("PrixUnits");
-        int prixTotal = objet.getInt("PrixTotals");
+        int prixUnites = objet.getInt("PrixUnites");
+        int prixTotal = objet.getInt("PrixTotal");
 
         SuiviCommande suiviCommande = new SuiviCommande(
                             IdClient, 
@@ -116,7 +116,7 @@ public class SuiviCommande implements Serializable
                             prixUnites,
                             prixTotal
                             );
-
+        System.out.println("2");
         return suiviCommande;
     }
 

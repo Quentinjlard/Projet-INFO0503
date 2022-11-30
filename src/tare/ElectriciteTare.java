@@ -25,11 +25,11 @@ public class ElectriciteTare implements Runnable {
         try {
             serveur = HttpServer.create(new InetSocketAddress(1021), 0);
         } catch(IOException e) {
-            System.err.println("Erreur lors de la crÃ©ation du serveur " + e);
+            gestionMessage.afficheMessage("Erreur lors de la creation du serveur " + e);
             System.exit(0);
         }
 
-        serveur.createContext("/index", new ElectriciteHandler());
+        serveur.createContext("/traitement", new ElectriciteHandler());
         serveur.setExecutor(null);
         serveur.start();
 

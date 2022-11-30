@@ -29,7 +29,7 @@ public class PetroleTare implements Runnable {
             System.exit(0);
         }
 
-        serveur.createContext("/index", new PetroleHandler());
+        serveur.createContext("/traitement", new PetroleHandler());
         serveur.setExecutor(null);
         serveur.start();
 

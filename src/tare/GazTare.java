@@ -29,7 +29,7 @@ public class GazTare implements Runnable {
             System.exit(0);
         }
 
-        serveur.createContext("/index", new GazHandler());
+        serveur.createContext("/traitement", new GazHandler());
         serveur.setExecutor(null);
         serveur.start();
 

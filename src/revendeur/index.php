@@ -15,7 +15,7 @@
     <body>
         <div class="container">
             <H2>Passer une commande</H2>
-            <form action="Traitement.php" method="POST" >
+            <form action="traitement.php" method="POST" >
                 <div>
                     <label for="Energie" class="form-group"> Type d'énergie voulu :</label>
                         <select name="Energie" id="Energie" required="required" class="form-control">
