@@ -10,7 +10,7 @@ public class SuiviCommande implements Serializable
     private int idRevendeur;
     private int idTare;
     private int numeroDeCommande;
-    private int numerodDeLot;
+    private int numeroDeLot;
     private String typeEnergie;
     private String modeExtraction;
     private int quantiteDemander;
@@ -23,7 +23,7 @@ public class SuiviCommande implements Serializable
         this.idRevendeur = idRevendeur;
         this.idTare = idTare;
         this.numeroDeCommande = numeroDeCommande;
-        this.numerodDeLot = numerodDeLot;
+        this.numeroDeLot = numeroDeLot;
         this.typeEnergie = typeEnergie; 
         this.modeExtraction = modeExtraction;   
         this.quantiteDemander = quantiteDemander;
@@ -68,6 +68,10 @@ public class SuiviCommande implements Serializable
     public String getTypeEnergie() {
         return typeEnergie;
     }
+    public int getNumeroDeLot() 
+    {
+        return numeroDeLot;
+    }
 
     public JSONObject toJson()
     {
@@ -76,7 +80,7 @@ public class SuiviCommande implements Serializable
         json.put("IdRevendeur", this.idRevendeur);
         json.put("IdTare", this.idTare);
         json.put("NumeroDeCommande", this.numeroDeCommande);
-        json.put("NumeroDeLot", this.numerodDeLot);
+        json.put("NumeroDeLot", this.numeroDeLot);
         json.put("TypeEnergie", this.typeEnergie);
         json.put("ModeExtraction", this.modeExtraction);
         json.put("QuantiteDemander", this.quantiteDemander);
@@ -95,7 +99,7 @@ public class SuiviCommande implements Serializable
         int IdRevendeur = objet.getInt("IdRevendeur");
         int IdTare = objet.getInt("IdTare");
         int numeroDeCommande = objet.getInt("NumeroDeCommande");
-        int numerodDeLot = objet.getInt("NumeroDeLot");
+        int numeroDeLot = objet.getInt("NumeroDeLot");
         String typeEnergie = objet.getString("TypeEnergie");
         String modeExtraction = objet.getString("ModeExtraction");
         int quantiteDemander = objet.getInt("QuantiteDemander");
@@ -108,7 +112,7 @@ public class SuiviCommande implements Serializable
                             IdRevendeur, 
                             IdTare, 
                             numeroDeCommande, 
-                            numerodDeLot,
+                            numeroDeLot,
                             typeEnergie, 
                             modeExtraction, 
                             quantiteDemander, 
@@ -127,7 +131,7 @@ public class SuiviCommande implements Serializable
                                 "  => Id Revendeur : "           + this.idRevendeur             + "\n" +
                                 "  => Id Tare : "                + this.idTare                  + "\n" +
                                 "  => Numero de commande : "     + this.numeroDeCommande        + "\n" +
-                                "  => Numero de lot : "          + this.numerodDeLot            + "\n" +
+                                "  => Numero de lot : "          + this.numeroDeLot            + "\n" +
                                 "  => Type Energie : "           + this.typeEnergie             + "\n" +
                                 "  => Mode Extraction : "        + this.modeExtraction          + "\n" +
                                 "  => Quantite Demander : "      + this.quantiteDemander        + "\n" +

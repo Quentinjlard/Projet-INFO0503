@@ -122,7 +122,7 @@ public class ElectriciteHandler implements HttpHandler {
         }
         String msgRecuStroString = new String(msgRecu.getData());
         SuiviCommande commande = SuiviCommande.FromJSON(msgRecuStroString);
-        // gestionMessage.afficheMessage("=> Lu " + commande);
+        gestionMessage.afficheMessage("=> Lu " + commande);
 
         JSONObject commanderetour = commande.toJson();
 

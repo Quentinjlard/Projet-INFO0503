@@ -132,6 +132,7 @@ public class MarcheGros implements Runnable{
                         if((electriciteNucleaire.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
                             Energie nrj = electriciteNucleaire.get(i);
+                            gestionMessage.afficheMessage(" Num Lo " + nrj.getNumeroDeLot());
                             reponseCommande = new SuiviCommande( 
                                 commande.getIdClient(), 
                                 2, 
@@ -145,6 +146,7 @@ public class MarcheGros implements Runnable{
                                 nrj.getPrixUnite(),
                                 nrj.getQuantiteEnvoyer() * nrj.getPrixUnite()
                                 );
+                            gestionMessage.afficheMessage("Num Lot " + reponseCommande.getNumeroDeLot());
                             electriciteNucleaire.remove(nrj);
                         }
                         
@@ -246,6 +248,7 @@ public class MarcheGros implements Runnable{
                                                     );
                 }
 
+                gestionMessage.afficheMessage(reponseCommande.toString());
                 JSONObject reponseCommandeJson = reponseCommande.toJson();
 
                 try 
