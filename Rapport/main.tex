@@ -1,0 +1,100 @@
+\documentclass[a4paper, 11pt, french]{report}
+\usepackage{setspace}
+\setstretch{1,15}
+% \usepackage{fontspec}
+% \setmainfont{Verdana}
+\usepackage{newunicodechar}
+\usepackage{babel}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{lipsum}
+\renewcommand{\thesection}{\arabic{section}}
+\usepackage{ulem}
+\usepackage{geometry}
+\geometry{hmargin=2.5cm,vmargin=3.5cm}
+
+
+
+\begin{document}
+
+\begin{title}
+
+\title{
+    {\Huge Le systéme d'achat de l'energie}\\
+    \vspace{1 cm}
+    {\LARGE JUILLIARD Quentin S5O6}\\
+    {\LARGE COGNE Romain S5O6}\\
+    \vspace{2.5 cm}
+    {\includegraphics[width=100mm, height=70mm]{logo_univ}}\\
+    \vspace{2.5 cm}
+    {\Large Monsieur BOISSON, INFO0503 / Département Informatique}\\
+    \vspace{1 cm}
+    {\date{\Large Dimanche 11 décembre 2022}}}
+\end{title}
+
+\maketitle
+\tableofcontents
+\clearpage
+
+
+\pagenumbering{arabic}
+
+\section{Introduction}
+\input{Chapitres/introduction}
+
+\subsection{Relation entre Revendeur et Tare}
+\input{Chapitres/Chapitre1/NomChapitre}
+
+\subsection{Relation entre Tare et Marché de Gros}
+\input{Chapitres/Chapitre1/sousPartie1}
+
+\subsection{Relation entre Marché de Gros et PONE}
+\input{Chapitres/Chapitre1/sousPartie2}
+
+\subsection{Role de l'AMI}
+\input{Chapitres/Chapitre1/sousPartie3}
+
+\section{Diagramme}
+\input{Chapitres/Chapitre2/DiagrammeGeneral}
+
+\subsection{Architecture Echange}
+\input{Chapitres/Chapitre2/ArchitectureEchange}
+
+\section{Les différentes relations}
+\input{Chapitres/Chapitre3/explication}
+
+\subsection{Realtion HTTP}
+\input{Chapitres/Chapitre3/HTTP}
+
+\subsection{Relation UDP}
+\input{Chapitres/Chapitre3/UDP}
+
+\subsection{Relation TCP}
+\input{Chapitres/Chapitre3/TCP}
+
+\subsection{Relation PHP}
+\input{Chapitres/Chapitre3/PHP}
+
+\section{Sénario}
+\input{Chapitres/Chapitre4/Senario0}
+
+\subsection{Scénario A}
+\input{Chapitres/Chapitre4/SenarioA}
+
+\subsection{Scénario B}
+\input{Chapitres/Chapitre4/SenarioB}
+
+\subsection{Scénario C}
+\input{Chapitres/Chapitre4/SenarioC}
+
+\subsection{Scénario D}
+\input{Chapitres/Chapitre4/SenarioD}
+
+\subsection{Scénario A2}
+\input{Chapitres/Chapitre4/SenarioA2}
+
+\section{Conclusion}
+\input{Chapitres/conclusion}
+
+
+\end{document}
