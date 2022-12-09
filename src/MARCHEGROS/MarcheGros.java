@@ -132,7 +132,6 @@ public class MarcheGros implements Runnable{
                         if((electriciteNucleaire.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
                             Energie nrj = electriciteNucleaire.get(i);
-                            gestionMessage.afficheMessage(" Num Lo " + nrj.getNumeroDeLot());
                             reponseCommande = new SuiviCommande( 
                                 commande.getIdClient(), 
                                 2, 
@@ -146,11 +145,10 @@ public class MarcheGros implements Runnable{
                                 nrj.getPrixUnite(),
                                 nrj.getQuantiteEnvoyer() * nrj.getPrixUnite()
                                 );
-                            gestionMessage.afficheMessage("Num Lot " + reponseCommande.getNumeroDeLot());
                             electriciteNucleaire.remove(nrj);
                         }
                         
-                if(TypeEnergie.equals("Electricite") && ModeExtraction.equals("Eolienne"))
+                if(TypeEnergie.equals("Electricite") && (ModeExtraction.equals("Eolienne") || ModeExtraction.equals("Aucune restriction")))
                     for (int i = 0; i < electriciteEolienne.size(); i++)
                         if((electriciteEolienne.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
@@ -159,7 +157,7 @@ public class MarcheGros implements Runnable{
                             electriciteEolienne.remove(nrj);
                         }
 
-                if(TypeEnergie.equals("Electricite") && ModeExtraction.equals("Charbon"))
+                if(TypeEnergie.equals("Electricite") && (ModeExtraction.equals("Charbon") || ModeExtraction.equals("Aucune restriction")))
                     for (int i = 0; i < electriciteCharbon.size(); i++)
                         if((electriciteCharbon.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
@@ -168,7 +166,7 @@ public class MarcheGros implements Runnable{
                             electriciteCharbon.remove(nrj);
                         }
 
-                if(TypeEnergie.equals("Gaz") && (ModeExtraction.equals("Natuel") || ModeExtraction.equals("Aucune restriction")))
+                if(TypeEnergie.equals("Gaz") && (ModeExtraction.equals("Naturel") || ModeExtraction.equals("Aucune restriction")))
                     for (int i = 0; i < gazNatuel.size(); i++)
                         if((gazNatuel.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
@@ -248,7 +246,7 @@ public class MarcheGros implements Runnable{
                                                     );
                 }
 
-                gestionMessage.afficheMessage(reponseCommande.toString());
+                //gestionMessage.afficheMessage(reponseCommande.toString());
                 JSONObject reponseCommandeJson = reponseCommande.toJson();
 
                 try 

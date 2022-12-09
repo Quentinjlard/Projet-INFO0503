@@ -1,3 +1,5 @@
+import java.util.concurrent.TimeUnit;
+
 import ami.*;
 import marchegros.*;
 import pone.*;
@@ -60,7 +62,7 @@ public class Lanceur {
         mesServices.add(new Thread(new GazPone(portGazPoneUDP)));
 
         mesServices.add(new Thread(new PetroleTare(portPetroleTareUDP)));
-        mesServices.add(new Thread(new PetrolePone(portPetrolePoneUDP)));
+        //mesServices.add(new Thread(new PetrolePone(portPetrolePoneUDP)));
 
         mesServices.add(new Thread(new MarcheGros(portMarcheGros)));
 
@@ -75,5 +77,17 @@ public class Lanceur {
             Thread thread = it.next();
             thread.start();
         }
+
+        try {
+            TimeUnit.SECONDS.sleep(30);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        Thread Petrole = new Thread(new PetrolePone(portPetrolePoneUDP));
+        Petrole.start();
+
+        
     }
 }

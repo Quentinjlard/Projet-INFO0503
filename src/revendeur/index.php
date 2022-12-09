@@ -51,13 +51,13 @@
                 </div>
             </form> 
             <br><br>
-            <button type="button" class="btn btn-secondary">Sénario 1</button>
-            <button type="button" class="btn btn-info">Sénario 2</button>
-            <button type="button" class="btn btn-warning">Sénario 3</button>
-            <button type="button" class="btn btn-danger">Sénario 4</button>
-            <button type="button" class="btn btn-dark">Sénario 5</button>
+            <button type="button" class="btn btn-secondary">Sénario A</button>
+            <button type="button" class="btn btn-info">Sénario A2</button>
+            <button type="button" class="btn btn-warning">Sénario B</button>
+            <button type="button" class="btn btn-danger">Sénario C</button>
+            <button type="button" class="btn btn-dark">Sénario D</button>
             <br><br>
-            2022/2023 | Info0503 | TP2 | Copyright Romain Cogné & Quentin Juilliard
+            2022/2023 | Info0503 | Projet | Copyright Romain Cogné & Quentin Juilliard
         </div>
     </body>
 </html>
