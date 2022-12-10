@@ -92,18 +92,17 @@ public class MarcheGros implements Runnable{
             {
                 energie = Energie.FromJSON(msgRecuStroString);
                 gestionMessage.afficheMessage("J'ai bien recu le paquet : " + energie.getNumeroDeLot());
-<<<<<<< HEAD
-
-=======
-                //gestionMessage.afficheMessage(energie.toString());
->>>>>>> 025d9f8ea116476180a0f58d50c85daef1ed9c8e
             }
             else
             {
                 commande = SuiviCommande.FromJSON(msgRecuStroString);
                 gestionMessage.afficheMessage("J'ai bien recu la commande : " + commande.getNumeroDeCommande());
             }
-            //Validation du prix de l'energie (établit par le PONE) par l'AMI
+
+
+            if(energie != null)
+            {
+                //Validation du prix de l'energie (établit par le PONE) par l'AMI
                 // Création de la socket
                 Socket socketTCP = null;
                 try {
@@ -131,14 +130,15 @@ public class MarcheGros implements Runnable{
                 //Récupération clé publique
                 String nomFichierClePublique = "src"+java.io.File.separator+"publique";
                 PublicKey clePublique = GestionClesRSA.lectureClePublique(nomFichierClePublique);
-                //Envoi demande d'energie & Chiffrement du message
+                //Envoi validation prix d'energie & Chiffrement du message
                 byte[] bytes = null;
                 try {
                     Cipher chiffreur = Cipher.getInstance("RSA");
                     chiffreur.init(Cipher.ENCRYPT_MODE, clePublique);
-                    bytes = chiffreur.doFinal((energie.toJson()).toString().getBytes());
+                    bytes = chiffreur.doFinal(("1"+(energie.toJson()).toString()).getBytes());
                     gestionMessage.afficheMessage("J'envoie une energie a l'AMI pour validation du prix");
-                    outputTCP.println(new String(bytes));
+                    String message = java.util.Base64.getEncoder().encodeToString(bytes);
+                    outputTCP.println(message);
                 } catch(NoSuchAlgorithmException e) {
                     System.err.println("Erreur lors du chiffrement : " + e);
                     System.exit(0);
@@ -164,21 +164,20 @@ public class MarcheGros implements Runnable{
                 PrivateKey clePrivee = GestionClesRSA.lectureClePrivee(nomFichierClePrivee);
                 String message ="";
 
-                //Récupération de l'énergie
+                //Récupération de la réponse
                 try {
                     message = inputTCP.readLine();
                 } catch(IOException e) {
                     System.err.println("Erreur lors de la lecture : " + e);
                     System.exit(0);
                 }
-                gestionMessage.afficheMessage("J'ai reçu une énergie pour valider le prix");
                 // Déchiffrement du message
+                byte[] array = java.util.Base64.getDecoder().decode(message);
                 bytes = null;
                 try {
                     Cipher dechiffreur = Cipher.getInstance("RSA");
-                    bytes = java.util.Base64.getDecoder().decode(message);
                     dechiffreur.init(Cipher.DECRYPT_MODE, clePrivee);
-                    bytes = dechiffreur.doFinal(bytes);
+                    bytes = dechiffreur.doFinal(array);
                 } catch(NoSuchAlgorithmException e) {
                     System.err.println("Erreur lors du dechiffrement : " + e);
                     System.exit(0);
@@ -196,10 +195,8 @@ public class MarcheGros implements Runnable{
                     System.exit(0);
                 }
                 String réponse = new String(bytes);
-                gestionMessage.afficheMessage("J'ai bien reçu la réponse de validation de l'AMI");
+                gestionMessage.afficheMessage("J'ai bien reçu la réponse de validation de l'AMI : " + réponse);
 
-            if(energie != null)
-            {
                 if(energie.getTypeEnergie().equals("Electricite"))
                     if(energie.getModeExtraction().equals("Nucleaire"))
                         electriciteNucleaire.add(energie);
@@ -233,6 +230,101 @@ public class MarcheGros implements Runnable{
             
             if(commande != null)
             {
+                //Validation du de l'achat par l'AMI
+                // Création de la socket
+                Socket socketTCP = null;
+                try {
+                    socketTCP = new Socket("localhost", portEcouteAMI);
+                } catch(UnknownHostException e) {
+                    System.err.println("Erreur sur l'hôte : " + e);
+                    System.exit(0);
+                } catch(IOException e) {
+                    System.err.println("Création de la socket impossible : " + e);
+                    System.exit(0);
+                }
+            
+                // Association d'un flux d'entrée et de sortie
+                BufferedReader inputTCP = null;
+                PrintWriter outputTCP = null;
+                try {
+                    inputTCP = new BufferedReader(new InputStreamReader(socketTCP.getInputStream()));
+                    outputTCP = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socketTCP.getOutputStream())), true);
+                } catch(IOException e) {
+                    System.err.println("Association des flux impossible : " + e);
+                    System.exit(0);
+                }
+                
+                
+                //Récupération clé publique
+                String nomFichierClePublique = "src"+java.io.File.separator+"publique";
+                PublicKey clePublique = GestionClesRSA.lectureClePublique(nomFichierClePublique);
+                //Envoi validation achat & Chiffrement du message
+                byte[] bytes = null;
+                try {
+                    Cipher chiffreur = Cipher.getInstance("RSA");
+                    chiffreur.init(Cipher.ENCRYPT_MODE, clePublique);
+                    bytes = chiffreur.doFinal(("2"+(commande.toJson()).toString()).getBytes());
+                    gestionMessage.afficheMessage("J'envoie une demande d'achat pour validation du prix");
+                    String message = java.util.Base64.getEncoder().encodeToString(bytes);
+                    outputTCP.println(message);
+                } catch(NoSuchAlgorithmException e) {
+                    System.err.println("Erreur lors du chiffrement : " + e);
+                    System.exit(0);
+                } catch(NoSuchPaddingException e) {
+                    System.err.println("Erreur lors du chiffrement : " + e);
+                    System.exit(0);
+                } catch(InvalidKeyException e) {
+                    System.err.println("Erreur lors du chiffrement : " + e);
+                    System.exit(0);
+                } catch(IllegalBlockSizeException e) {
+                    System.err.println("Erreur lors du chiffrement : " + e);
+                    System.exit(0);
+                } catch(BadPaddingException e) {
+                    System.err.println("Erreur lors du chiffrement : " + e);
+                    System.exit(0);
+                } 
+
+                //Récupération réponse
+                
+
+                // Récupération de la clé privée
+                String nomFichierClePrivee = "src"+java.io.File.separator+"privee";
+                PrivateKey clePrivee = GestionClesRSA.lectureClePrivee(nomFichierClePrivee);
+                String message ="";
+
+                //Récupération de le la réponse
+                try {
+                    message = inputTCP.readLine();
+                } catch(IOException e) {
+                    System.err.println("Erreur lors de la lecture : " + e);
+                    System.exit(0);
+                }
+                // Déchiffrement du message
+                byte[] array = java.util.Base64.getDecoder().decode(message);
+                bytes = null;
+                try {
+                    Cipher dechiffreur = Cipher.getInstance("RSA");
+                    dechiffreur.init(Cipher.DECRYPT_MODE, clePrivee);
+                    bytes = dechiffreur.doFinal(array);
+                } catch(NoSuchAlgorithmException e) {
+                    System.err.println("Erreur lors du dechiffrement : " + e);
+                    System.exit(0);
+                } catch(NoSuchPaddingException e) {
+                    System.err.println("Erreur lors du dechiffrement : " + e);
+                    System.exit(0);
+                } catch(InvalidKeyException e) {
+                    System.err.println("Erreur lors du dechiffrement : " + e);
+                    System.exit(0);
+                } catch(IllegalBlockSizeException e) {
+                    System.err.println("Erreur lors du dechiffrement : " + e);
+                    System.exit(0);
+                } catch(BadPaddingException e) {
+                    System.err.println("Erreur lors du dechiffrement : " + e);
+                    System.exit(0);
+                }
+                String réponse = new String(bytes);
+                gestionMessage.afficheMessage("J'ai bien reçu la réponse de validation de l'AMI : " + réponse);
+
                 String TypeEnergie = commande.getTypeEnergie();
                 int QuantiteDemander = commande.getQuantiteDemander();
                 String ModeExtraction = commande.getModeExtraction();
