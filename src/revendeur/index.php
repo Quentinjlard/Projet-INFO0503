@@ -14,7 +14,7 @@
 
     <body>
         <div class="container">
-            <H2>Passer une commande</H2>
+            <H2>Passer une commande Généraliste</H2>
             <form action="traitement.php" method="POST" >
                 <div>
                     <label for="Energie" class="form-group"> Type d'énergie voulu :</label>
@@ -41,7 +41,7 @@
                 <br>
                 <div class ="form-group">
                     <label for="quantite" class="form-group"> Quantité d'énergie : </label>
-                    <input name="quantite" id="quantite" type="number" min="1" max ="99999" placeholder="20000" required="required" class="form-control">
+                    <input name="quantite" id="quantite" type="number" min="1" max ="300" placeholder="150" required="required" class="form-control">
                 </div>
                 <br>
                 
@@ -51,12 +51,112 @@
                 </div>
             </form> 
             <br><br>
-            <button type="button" class="btn btn-secondary">Sénario 1</button>
-            <button type="button" class="btn btn-info">Sénario 2</button>
-            <button type="button" class="btn btn-warning">Sénario 3</button>
-            <button type="button" class="btn btn-danger">Sénario 4</button>
-            <button type="button" class="btn btn-dark">Sénario 5</button>
+
+            <h2 class="text-center"> Les différents sénario : </h2>
             <br><br>
+            <table class="table text-center">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Sénario A</th>
+                    <th scope="col">Sénario B</th>
+                    <th scope="col">Sénario C</th>
+                    <th scope="col">Sénario D</th>
+                    <th scope="col">Sénario A2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">
+                        
+                        Type d'énergie <br><br><br>
+                        Mode Extraction <br><br><br>
+                        Quantite <br><br><br>
+                        Lancer <br>
+                    </th>
+                    <td>
+                        <form action="traitement.php" method="POST" >
+                            <input name="Energie" id="Energie" 
+                                required="required" class="form-control" value="Electricite">
+                            <br>
+                            <input name="extraction" id="extraction" 
+                                required="required" class="form-control" value="Aucune restriction">
+                            <br>
+                            <input name="quantite" id="quantite" 
+                                type="number" min="1" max ="300" placeholder="150" required="required" class="form-control" value="1">
+                            <br>
+                            <input class="btn btn-secondary" type="submit" name="submit" value="Sénario A">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="traitement.php" method="POST" >
+                            <input name="Energie" id="Energie" 
+                                required="required" class="form-control" value="Electricite">
+                            <br>
+                            <input name="extraction" id="extraction" 
+                                required="required" class="form-control" value="Aucune restriction">
+                            <br>
+                            <input name="quantite" id="quantite" 
+                                type="number" min="1" max ="300" placeholder="150" required="required" class="form-control" value="100">
+                            <br>
+                            <input class="btn btn-info" type="submit" name="submit" value="Sénario B">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="traitement.php" method="POST" >
+                            <input name="Energie" id="Energie" 
+                                required="required" class="form-control" value="Petrole">
+                            <br>
+                            <input name="extraction" id="extraction" 
+                                required="required" class="form-control" value="Aucune restriction">
+                            <br>
+                            <input name="quantite" id="quantite" 
+                                type="number" min="1" max ="300" placeholder="150" required="required" class="form-control" value="50">
+                            <br>
+                            <input class="btn btn-warning" type="submit" name="submit" value="Sénario C">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="traitement.php" method="POST" >
+                            <input name="Energie" id="Energie" 
+                                required="required" class="form-control" value="Electricite">
+                            <br>
+                            <input name="extraction" id="extraction" 
+                                required="required" class="form-control" value="Aucune restriction">
+                            <br>
+                            <input name="quantite" id="quantite" 
+                                type="number" min="1" max ="300" placeholder="150" required="required" class="form-control" value="1">
+                            <br>
+                            <input class="btn btn-danger" type="submit" name="submit" value="Sénario D">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="traitement.php" method="POST" >
+                            <input name="Energie" id="Energie" 
+                                required="required" class="form-control" value="Electricite">
+                            <br>
+                            <input name="extraction" id="extraction" 
+                                required="required" class="form-control" value="Aucune restriction">
+                            <br>
+                            <input name="quantite" id="quantite" 
+                                type="number" min="1" max ="300" placeholder="150" required="required" class="form-control" value="1">
+                            <br>
+                            <input class="btn btn-dark" type="submit" name="submit" value="Sénario A2">
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Remarque</th>
+                    <td>Satifait au 1er envoie</td>
+                    <td>Appuyer sur bon <br>Si non statisfait revenir et rétirer</td>
+                    <td>Attendre 30 seconde <br>aprés lancement du lanceur <br> Puis presser le bouton</td>
+                    <td>Non operationnel</td>
+                    <td>Non operationnel</td>
+                </tr>
+            </tbody>
+            </table>
+            <br><br>    
+
             2022/2023 | Info0503 | TP2 | Copyright Romain Cogné & Quentin Juilliard
         </div>
     </body>

@@ -92,7 +92,11 @@ public class MarcheGros implements Runnable{
             {
                 energie = Energie.FromJSON(msgRecuStroString);
                 gestionMessage.afficheMessage("J'ai bien recu le paquet : " + energie.getNumeroDeLot());
+<<<<<<< HEAD
 
+=======
+                //gestionMessage.afficheMessage(energie.toString());
+>>>>>>> 025d9f8ea116476180a0f58d50c85daef1ed9c8e
             }
             else
             {
@@ -197,15 +201,15 @@ public class MarcheGros implements Runnable{
             if(energie != null)
             {
                 if(energie.getTypeEnergie().equals("Electricite"))
-                if(energie.getModeExtraction().equals("Nucleaire"))
-                    electriciteNucleaire.add(energie);
-                else
-                    if(energie.getModeExtraction().equals("Eolienne"))
-                        electriciteEolienne.add(energie);
+                    if(energie.getModeExtraction().equals("Nucleaire"))
+                        electriciteNucleaire.add(energie);
                     else
-                        if(energie.getModeExtraction().equals("Charbon"))
-                            electriciteCharbon.add(energie);
-            else
+                        if(energie.getModeExtraction().equals("Eolienne"))
+                            electriciteEolienne.add(energie);
+                        else
+                            if(energie.getModeExtraction().equals("Charbon"))
+                                electriciteCharbon.add(energie);
+        
                 if(energie.getTypeEnergie().equals("Gaz"))
                     if(energie.getModeExtraction().equals("Naturel"))
                         gazNatuel.add(energie);
@@ -215,16 +219,16 @@ public class MarcheGros implements Runnable{
                         else
                             if(energie.getModeExtraction().equals("Propane"))
                                 gazPropoane.add(energie);
-                else
-                    if(energie.getTypeEnergie().equals("Petrole"))
-                        if(energie.getModeExtraction().equals("Diesel"))
-                            petroleDiesel.add(energie);
+                
+                if(energie.getTypeEnergie().equals("Petrole"))
+                    if(energie.getModeExtraction().equals("Diesel"))
+                        petroleDiesel.add(energie);
+                    else
+                        if(energie.getModeExtraction().equals("SP98"))
+                            petroleSP98.add(energie);
                         else
-                            if(energie.getModeExtraction().equals("SP98"))
-                                petroleSP98.add(energie);
-                            else
-                                if(energie.getModeExtraction().equals("SP95"))
-                                    petroleSP95.add(energie);
+                            if(energie.getModeExtraction().equals("SP95"))
+                                petroleSP95.add(energie);
             }
             
             if(commande != null)
@@ -241,7 +245,6 @@ public class MarcheGros implements Runnable{
                         if((electriciteNucleaire.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
                             Energie nrj = electriciteNucleaire.get(i);
-                            gestionMessage.afficheMessage(" Num Lo " + nrj.getNumeroDeLot());
                             reponseCommande = new SuiviCommande( 
                                 commande.getIdClient(), 
                                 2, 
@@ -255,11 +258,10 @@ public class MarcheGros implements Runnable{
                                 nrj.getPrixUnite(),
                                 nrj.getQuantiteEnvoyer() * nrj.getPrixUnite()
                                 );
-                            gestionMessage.afficheMessage("Num Lot " + reponseCommande.getNumeroDeLot());
                             electriciteNucleaire.remove(nrj);
                         }
                         
-                if(TypeEnergie.equals("Electricite") && ModeExtraction.equals("Eolienne"))
+                if(TypeEnergie.equals("Electricite") && (ModeExtraction.equals("Eolienne") || ModeExtraction.equals("Aucune restriction")))
                     for (int i = 0; i < electriciteEolienne.size(); i++)
                         if((electriciteEolienne.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
@@ -268,7 +270,7 @@ public class MarcheGros implements Runnable{
                             electriciteEolienne.remove(nrj);
                         }
 
-                if(TypeEnergie.equals("Electricite") && ModeExtraction.equals("Charbon"))
+                if(TypeEnergie.equals("Electricite") && (ModeExtraction.equals("Charbon") || ModeExtraction.equals("Aucune restriction")))
                     for (int i = 0; i < electriciteCharbon.size(); i++)
                         if((electriciteCharbon.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
@@ -277,7 +279,7 @@ public class MarcheGros implements Runnable{
                             electriciteCharbon.remove(nrj);
                         }
 
-                if(TypeEnergie.equals("Gaz") && (ModeExtraction.equals("Natuel") || ModeExtraction.equals("Aucune restriction")))
+                if(TypeEnergie.equals("Gaz") && (ModeExtraction.equals("Naturel") || ModeExtraction.equals("Aucune restriction")))
                     for (int i = 0; i < gazNatuel.size(); i++)
                         if((gazNatuel.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
@@ -286,7 +288,7 @@ public class MarcheGros implements Runnable{
                             gazNatuel.remove(nrj);
                         }
                 
-                if(TypeEnergie.equals("Gaz") && ModeExtraction.equals("Butane"))
+                if(TypeEnergie.equals("Gaz") && (ModeExtraction.equals("Butane") || ModeExtraction.equals("Aucune restriction")))
                     for (int i = 0; i < gazButane.size(); i++)
                         if((gazButane.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
@@ -295,7 +297,7 @@ public class MarcheGros implements Runnable{
                             gazButane.remove(nrj);
                         }
                 
-                if(TypeEnergie.equals("Gaz") && ModeExtraction.equals("Propane"))
+                if(TypeEnergie.equals("Gaz") && (ModeExtraction.equals("Propane") || ModeExtraction.equals("Aucune restriction")))
                     for (int i = 0; i < gazPropoane.size(); i++)
                         if((gazPropoane.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
@@ -313,7 +315,7 @@ public class MarcheGros implements Runnable{
                             petroleDiesel.remove(nrj);
                         }
 
-                if(TypeEnergie.equals("Petrole") && ModeExtraction.equals("SP98"))
+                if(TypeEnergie.equals("Petrole") && (ModeExtraction.equals("SP98") || ModeExtraction.equals("Aucune restriction")))
                     for (int i = 0; i < petroleSP98.size(); i++)
                         if((petroleSP98.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
@@ -322,7 +324,7 @@ public class MarcheGros implements Runnable{
                             petroleSP98.remove(nrj);
                         }
                         
-                if(TypeEnergie.equals("Petrole") && ModeExtraction.equals("SP95"))
+                if(TypeEnergie.equals("Petrole") && (ModeExtraction.equals("SP95") || ModeExtraction.equals("Aucune restriction")))
                     for (int i = 0; i < petroleSP95.size(); i++)
                         if((petroleSP95.get(i)).getQuantiteEnvoyer() >= QuantiteDemander)
                         {
@@ -357,7 +359,7 @@ public class MarcheGros implements Runnable{
                                                     );
                 }
 
-                gestionMessage.afficheMessage(reponseCommande.toString());
+                //gestionMessage.afficheMessage(reponseCommande.toString());
                 JSONObject reponseCommandeJson = reponseCommande.toJson();
 
                 try 
