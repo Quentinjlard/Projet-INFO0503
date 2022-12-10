@@ -1,4 +1,4 @@
-package MARCHEGROS;
+package marchegros;
 
 
 import java.io.BufferedReader;

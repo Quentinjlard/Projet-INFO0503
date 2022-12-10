@@ -1,7 +1,7 @@
 import java.util.concurrent.TimeUnit;
 
-import AMI.*;
-import MARCHEGROS.*;
+import ami.*;
+import marchegros.*;
 import pone.*;
 import source.Configuration;
 import tare.*;
