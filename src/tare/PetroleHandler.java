@@ -22,6 +22,8 @@ import source.*;
 
 public class PetroleHandler  implements HttpHandler {
 
+    private int portEcouteMarche = 4012;
+    private int portEcoutePetrole = 1023;
     
     public void handle(HttpExchange t) {
 
@@ -47,7 +49,7 @@ public class PetroleHandler  implements HttpHandler {
         try {
             query = br.readLine();
         } catch(IOException e) {
-            System.err.println("Erreur lors de la lecture d'une ligne " + e);
+            gestionMessage.afficheMessage("Erreur lors de la lecture d'une ligne " + e);
             System.exit(0);
         }
 
@@ -86,7 +88,7 @@ public class PetroleHandler  implements HttpHandler {
             System.exit(0);
         }
 
-        int portEcouteMarche = 4012;
+        
         try {
             byte[] donnees = objet.toString().getBytes();
             InetAddress adresse = InetAddress.getByName("localhost");
@@ -101,9 +103,9 @@ public class PetroleHandler  implements HttpHandler {
         }
 
         // reception du message
-        int portEcoute = 1023;
+        
         try {
-            socket = new DatagramSocket(portEcoute);
+            socket = new DatagramSocket(portEcoutePetrole);
         } catch (SocketException e) {
             gestionMessage.afficheMessage("Erreur lors de la creation de la socket : " + e);
             System.exit(0);
@@ -121,7 +123,7 @@ public class PetroleHandler  implements HttpHandler {
         }
         String msgRecuStroString = new String(msgRecu.getData());
         SuiviCommande commande = SuiviCommande.FromJSON(msgRecuStroString);
-        // gestionMessage.afficheMessage("=> Lu " + commande);
+        //gestionMessage.afficheMessage("=> Lu " + commande);
 
         JSONObject commanderetour = commande.toJson();
 

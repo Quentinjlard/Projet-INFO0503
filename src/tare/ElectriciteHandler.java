@@ -23,6 +23,8 @@ import source.*;
 public class ElectriciteHandler implements HttpHandler {
 
     private Messenger gestionMessage;
+    private int portEcouteMarche = 4012;
+    private int portEcouteElectricte = 1021;
     
     public void handle(HttpExchange t) {
 
@@ -87,7 +89,7 @@ public class ElectriciteHandler implements HttpHandler {
             System.exit(0);
         }
 
-        int portEcouteMarche = 4012;
+        
         try {
             byte[] donnees = objet.toString().getBytes();
             InetAddress adresse = InetAddress.getByName("localhost");
@@ -102,9 +104,9 @@ public class ElectriciteHandler implements HttpHandler {
         }
 
         // reception du message
-        int portEcoute = 1021;
+        
         try {
-            socket = new DatagramSocket(portEcoute);
+            socket = new DatagramSocket(portEcouteElectricte);
         } catch (SocketException e) {
             gestionMessage.afficheMessage("Erreur lors de la creation de la socket : " + e);
             System.exit(0);
@@ -122,7 +124,7 @@ public class ElectriciteHandler implements HttpHandler {
         }
         String msgRecuStroString = new String(msgRecu.getData());
         SuiviCommande commande = SuiviCommande.FromJSON(msgRecuStroString);
-        gestionMessage.afficheMessage("=> Lu " + commande);
+        //gestionMessage.afficheMessage("=> Lu " + commande);
 
         JSONObject commanderetour = commande.toJson();
 

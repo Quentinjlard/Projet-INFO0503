@@ -22,9 +22,12 @@ import source.*;
 
 public class GazHandler  implements HttpHandler {
     
+    private int portEcouteMarche = 4012;
+    private int portEcouteGaz = 1022;
+
     public void handle(HttpExchange t) {
 
-        Messenger gestionMessage=new Messenger("Handler - Electricite");
+        Messenger gestionMessage = new Messenger("Handler - Gaz");
         //gestionMessage.afficheMessage("GO ! ");
 
         String reponse = "";
@@ -46,7 +49,7 @@ public class GazHandler  implements HttpHandler {
         try {
             query = br.readLine();
         } catch(IOException e) {
-            System.err.println("Erreur lors de la lecture d'une ligne " + e);
+            gestionMessage.afficheMessage("Erreur lors de la lecture d'une ligne " + e);
             System.exit(0);
         }
 
@@ -61,19 +64,18 @@ public class GazHandler  implements HttpHandler {
             }
             reponse += query;
         }
-        //gestionMessage.afficheMessage("REPONSE => " + reponse);
+        // gestionMessage.afficheMessage("REPONSE => " + reponse);
 
         // création du code de suivi
         //gestionMessage.afficheMessage("TEST");
         SuiviCommande suiviCommande = SuiviCommande.FromJSON(reponse);
-        //gestionMessage.afficheMessage("Suivi Commande => " + suiviCommande);
+        // gestionMessage.afficheMessage("Suivi Commande => " + suiviCommande);
 
         JSONObject objet = suiviCommande.toJson();
 
         //gestionMessage.afficheMessage("Lu     " + reponse);
         //gestionMessage.afficheMessage("Envoye " + objet.toString());
-        // System.out.println(commande.toString());
-        // codeCommande.afficher();
+        //System.out.println(suiviCommande.toString());
 
 
 
@@ -85,7 +87,7 @@ public class GazHandler  implements HttpHandler {
             System.exit(0);
         }
 
-        int portEcouteMarche = 4012;
+        
         try {
             byte[] donnees = objet.toString().getBytes();
             InetAddress adresse = InetAddress.getByName("localhost");
@@ -100,9 +102,9 @@ public class GazHandler  implements HttpHandler {
         }
 
         // reception du message
-        int portEcoute = 1022;
+        
         try {
-            socket = new DatagramSocket(portEcoute);
+            socket = new DatagramSocket(portEcouteGaz);
         } catch (SocketException e) {
             gestionMessage.afficheMessage("Erreur lors de la creation de la socket : " + e);
             System.exit(0);
@@ -120,7 +122,7 @@ public class GazHandler  implements HttpHandler {
         }
         String msgRecuStroString = new String(msgRecu.getData());
         SuiviCommande commande = SuiviCommande.FromJSON(msgRecuStroString);
-        // gestionMessage.afficheMessage("=> Lu " + commande);
+        //gestionMessage.afficheMessage("=> Lu " + commande);
 
         JSONObject commanderetour = commande.toJson();
 

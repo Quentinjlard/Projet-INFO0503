@@ -53,12 +53,27 @@
 </header>
 <br>
 
-
+    <?php
+        if($json_fromJson_commande->getNumerodDeLot() == -1)
+        {
+            echo '<div class="alert alert-danger text-center" role="alert">';
+                echo 'Commande non fourni!';
+            echo '</div>';
+        }
+        else
+        {
+            echo '<div class="alert alert-success text-center" role="alert">';
+                echo 'Commande fourni!';
+            echo '</div>';
+        }
+        echo "<br/>";
+    ?>
+    
     <div class="" >
         <p>Information surt votre commande : </p>      
            <?php 
                 
-                echo "<br/> <br/>";
+                echo "<br/>";
         
                 // affiche un tableau avec les informations de l'utilisateur
                 echo '<table class="table table-bordered">'; 
