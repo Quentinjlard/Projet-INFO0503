@@ -120,7 +120,6 @@ public class SuiviCommande implements Serializable
                             prixUnites,
                             prixTotal
                             );
-        System.out.println("2");
         return suiviCommande;
     }
 
