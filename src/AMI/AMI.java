@@ -153,6 +153,7 @@ public class AMI implements Runnable{
                 break;
                 case 2: //demande validation achat par TARE
                     String achat = new String(bytes);
+                    achat = achat.substring(1);
                     demandeCommande = Commande.FromJSON(achat);
                     message = "L'achat  n°(" + demandeCommande.getNumeroDeCommande() + ") est accepté.";
         
@@ -182,9 +183,7 @@ public class AMI implements Runnable{
                     } 
                     gestionMessage.afficheMessage("J'envoie ma réponse au marche de gros (positive)." );
                     output.println(message);
-
             }
-
             
 
             // Fermeture des flux et des sockets
