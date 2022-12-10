@@ -43,7 +43,7 @@ public class AMI implements Runnable{
             //Mes variables
             String message = "";
             Energie demande;
-            Commande demandeCommande;
+            SuiviCommande demandeCommande;
             String nomFichierClePrivee = "src"+java.io.File.separator+"privee";
             String nomFichierClePublique = "src"+java.io.File.separator+"publique";
 
@@ -154,7 +154,7 @@ public class AMI implements Runnable{
                 case 2: //demande validation achat par TARE
                     String achat = new String(bytes);
                     achat = achat.substring(1);
-                    demandeCommande = Commande.FromJSON(achat);
+                    demandeCommande = SuiviCommande.FromJSON(achat);
                     message = "L'achat  n°(" + demandeCommande.getNumeroDeCommande() + ") est accepté.";
         
                     // Chiffrement du message
