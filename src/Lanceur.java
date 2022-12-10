@@ -1,8 +1,9 @@
-import ami.*;
-import marchegros.*;
+import AMI.*;
+import MARCHEGROS.*;
 import pone.*;
 import source.Configuration;
 import tare.*;
+
 
 /**
  * Lanceur de test pour démarrer une communication TCP (basé sur la fiche 1 du TP sur la communication TCP).
@@ -62,9 +63,10 @@ public class Lanceur {
         mesServices.add(new Thread(new PetroleTare(portPetroleTareUDP)));
         mesServices.add(new Thread(new PetrolePone(portPetrolePoneUDP)));
 
+        mesServices.add(new Thread(new AMI(portAMI)));
         mesServices.add(new Thread(new MarcheGros(portMarcheGros)));
 
-        mesServices.add(new Thread(new AMI(portAMI)));
+
 
 
 

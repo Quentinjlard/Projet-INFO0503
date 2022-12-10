@@ -6,11 +6,32 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Test_file",
+            "request": "launch",
+            "mainClass": "Test_file",
+            "projectName": "Projet-INFO0503_d43b327"
+        },
+        {
+            "type": "java",
+            "name": "Launch Test_file",
+            "request": "launch",
+            "mainClass": "cles.Test_file",
+            "projectName": "Projet-INFO0503_d43b327"
+        },
+        {
+            "type": "java",
             "name": "Launch Lanceur",
             "request": "launch",
             "mainClass": "Lanceur",
-            "projectName": "Projet-INFO0503_65b3ef6e"
-            ,
+            "projectName": "Projet-INFO0503_d43b327",
+            "args": "config.json"
+        },
+        {
+            "type": "java",
+            "name": "Launch Lanceur",
+            "request": "launch",
+            "mainClass": "Lanceur",
+            "projectName": "Projet-INFO0503_65b3ef6e",
             "args": "config.json"
         },
         {

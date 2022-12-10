@@ -1,16 +1,30 @@
-package marchegros;
+package MARCHEGROS;
 
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
-
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.json.JSONObject;
 
@@ -21,6 +35,7 @@ public class MarcheGros implements Runnable{
     private int portMarcheGros = 0000;
     private Messenger gestionMessage;
     private int portEcoute = 4012;
+    private int portEcouteAMI = 5010;
 
 
     public MarcheGros(int portMarcheGros) 
@@ -48,7 +63,7 @@ public class MarcheGros implements Runnable{
         
 
         while(true)
-        {
+        {   
             // Création de la socket
             DatagramSocket socket = null;
             try {        
@@ -77,14 +92,108 @@ public class MarcheGros implements Runnable{
             {
                 energie = Energie.FromJSON(msgRecuStroString);
                 gestionMessage.afficheMessage("J'ai bien recu le paquet : " + energie.getNumeroDeLot());
+
             }
             else
             {
                 commande = SuiviCommande.FromJSON(msgRecuStroString);
                 gestionMessage.afficheMessage("J'ai bien recu la commande : " + commande.getNumeroDeCommande());
             }
+            //Validation du prix de l'energie (établit par le PONE) par l'AMI
+                // Création de la socket
+                Socket socketTCP = null;
+                try {
+                    socketTCP = new Socket("localhost", portEcouteAMI);
+                } catch(UnknownHostException e) {
+                    System.err.println("Erreur sur l'hôte : " + e);
+                    System.exit(0);
+                } catch(IOException e) {
+                    System.err.println("Création de la socket impossible : " + e);
+                    System.exit(0);
+                }
             
-            
+                // Association d'un flux d'entrée et de sortie
+                BufferedReader inputTCP = null;
+                PrintWriter outputTCP = null;
+                try {
+                    inputTCP = new BufferedReader(new InputStreamReader(socketTCP.getInputStream()));
+                    outputTCP = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socketTCP.getOutputStream())), true);
+                } catch(IOException e) {
+                    System.err.println("Association des flux impossible : " + e);
+                    System.exit(0);
+                }
+                
+                
+                //Récupération clé publique
+                String nomFichierClePublique = "src"+java.io.File.separator+"publique";
+                PublicKey clePublique = GestionClesRSA.lectureClePublique(nomFichierClePublique);
+                //Envoi demande d'energie & Chiffrement du message
+                byte[] bytes = null;
+                try {
+                    Cipher chiffreur = Cipher.getInstance("RSA");
+                    chiffreur.init(Cipher.ENCRYPT_MODE, clePublique);
+                    bytes = chiffreur.doFinal((energie.toJson()).toString().getBytes());
+                    gestionMessage.afficheMessage("J'envoie une energie a l'AMI pour validation du prix");
+                    outputTCP.println(new String(bytes));
+                } catch(NoSuchAlgorithmException e) {
+                    System.err.println("Erreur lors du chiffrement : " + e);
+                    System.exit(0);
+                } catch(NoSuchPaddingException e) {
+                    System.err.println("Erreur lors du chiffrement : " + e);
+                    System.exit(0);
+                } catch(InvalidKeyException e) {
+                    System.err.println("Erreur lors du chiffrement : " + e);
+                    System.exit(0);
+                } catch(IllegalBlockSizeException e) {
+                    System.err.println("Erreur lors du chiffrement : " + e);
+                    System.exit(0);
+                } catch(BadPaddingException e) {
+                    System.err.println("Erreur lors du chiffrement : " + e);
+                    System.exit(0);
+                } 
+
+                //Récupération réponse
+                
+
+                // Récupération de la clé privée
+                String nomFichierClePrivee = "src"+java.io.File.separator+"privee";
+                PrivateKey clePrivee = GestionClesRSA.lectureClePrivee(nomFichierClePrivee);
+                String message ="";
+
+                //Récupération de l'énergie
+                try {
+                    message = inputTCP.readLine();
+                } catch(IOException e) {
+                    System.err.println("Erreur lors de la lecture : " + e);
+                    System.exit(0);
+                }
+                gestionMessage.afficheMessage("J'ai reçu une énergie pour valider le prix");
+                // Déchiffrement du message
+                bytes = null;
+                try {
+                    Cipher dechiffreur = Cipher.getInstance("RSA");
+                    bytes = java.util.Base64.getDecoder().decode(message);
+                    dechiffreur.init(Cipher.DECRYPT_MODE, clePrivee);
+                    bytes = dechiffreur.doFinal(bytes);
+                } catch(NoSuchAlgorithmException e) {
+                    System.err.println("Erreur lors du dechiffrement : " + e);
+                    System.exit(0);
+                } catch(NoSuchPaddingException e) {
+                    System.err.println("Erreur lors du dechiffrement : " + e);
+                    System.exit(0);
+                } catch(InvalidKeyException e) {
+                    System.err.println("Erreur lors du dechiffrement : " + e);
+                    System.exit(0);
+                } catch(IllegalBlockSizeException e) {
+                    System.err.println("Erreur lors du dechiffrement : " + e);
+                    System.exit(0);
+                } catch(BadPaddingException e) {
+                    System.err.println("Erreur lors du dechiffrement : " + e);
+                    System.exit(0);
+                }
+                String réponse = new String(bytes);
+                gestionMessage.afficheMessage("J'ai bien reçu la réponse de validation de l'AMI");
+
             if(energie != null)
             {
                 if(energie.getTypeEnergie().equals("Electricite"))
