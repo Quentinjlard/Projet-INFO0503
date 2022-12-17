@@ -147,8 +147,8 @@
                 </tr>
                 <tr>
                     <th scope="row">Remarque</th>
-                    <td>Satifait au 1er envoie</td>
-                    <td>Appuyer sur bon <br>Si non statisfait revenir et rétirer</td>
+                    <td>Satifait au 1er envoie <br> Attendre 5 seconde aprés lancement</td>
+                    <td>Appuyer sur bon <br>Si non statisfait revenir et recommencer <br> Sinon relancer l'application en cas de reponse toujpours satisifaite</td>
                     <td>Attendre 30 seconde <br>aprés lancement du lanceur <br> Puis presser le bouton</td>
                     <td>Non operationnel</td>
                     <td>Non operationnel</td>

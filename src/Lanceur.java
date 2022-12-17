@@ -78,6 +78,12 @@ public class Lanceur {
         while(it.hasNext()) {
             Thread thread = it.next();
             thread.start();
+            try {
+                thread.sleep(1000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
 
         try {

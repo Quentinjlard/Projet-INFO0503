@@ -2,4 +2,4 @@
 
 Modélisation  d'un systéme d'échanghe client/Serveur.
 
-Pour plus d'information sur le projet rendez-vous dans la section rapport.
+Pour plus d'information sur le projet veuillez consulter le rapport de projet.

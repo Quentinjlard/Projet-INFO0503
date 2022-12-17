@@ -1,21 +1,39 @@
-\documentclass[a4paper, 11pt, french]{report}
+\documentclass[a4paper, 11pt]{report}
 \usepackage{setspace}
 \setstretch{1,15}
-% \usepackage{fontspec}
-% \setmainfont{Verdana}
-\usepackage{newunicodechar}
-\usepackage{babel}
+%\usepackage{newunicodechar}
+\usepackage[french]{babel}
 \usepackage{graphicx}
 \graphicspath{{images/}}
+\usepackage{fontspec}
+\setmainfont{Verdana}
 \usepackage{lipsum}
 \renewcommand{\thesection}{\arabic{section}}
 \usepackage{ulem}
 \usepackage{geometry}
 \geometry{hmargin=2.5cm,vmargin=3.5cm}
+\usepackage{fancyhdr}
 
+\author{JUILLIARD-COGNE}
+
+
+%%exemple titre : Un semestre à cracovie:
+%% Entre orient et occident
+%%De l'autre coté du rideau de fer
+%%Associé à l'Est, veut se rapprocher de l'Ouest
 
 
 \begin{document}
+
+\pagestyle{fancy}
+
+\fancyhead{}\fancyfoot{}
+%\fancyhead[ER]{Projet SALE} Fonctionne que si en mode book
+%\fancyhead[ER]{L3 informatique Reims Année 2022-2023} Fonctionne que si en mode book
+
+\fancyhead[L]{JUILLIARD Quentin - COGNE Romain} 
+\fancyhead[R]{\thepage} 
+\fancyfoot[R]{Année Universitaire 2022 - 2023}
 
 \begin{title}
 
@@ -25,7 +43,7 @@
     {\LARGE JUILLIARD Quentin S5O6}\\
     {\LARGE COGNE Romain S5O6}\\
     \vspace{2.5 cm}
-    {\includegraphics[width=90mm, height=50mm]{logo_univ}}\\
+    {\includegraphics[width=80mm, height=40mm]{logo_univ}}\\
     \vspace{2.5 cm}
     {\Large Monsieur BOISSON, INFO0503 / Département Informatique}\\
     \vspace{1 cm}
@@ -36,65 +54,70 @@
 \tableofcontents
 \clearpage
 
-
-\pagenumbering{arabic}
+%\pagenumbering{arabic}
 
 \section{Introduction}
-\input{Chapitres/introduction}
+\input{Chapitres/Chapitre1/introduction}
 
-\subsection{Relation entre Revendeur et Tare}
-\input{Chapitres/Chapitre1/RealtionRevendeurTare}
+\section{Lancement du projet}
+\input{Chapitres/Chapitre2/Lancement.tex}
 
-\subsection{Relation entre Tare et Marché de Gros}
-\input{Chapitres/Chapitre1/TareMarcheGros}
+\subsection{Organisation des fichiers}
+\input{Chapitres/Chapitre2/OrganisationFichier.tex}
 
-\subsection{Relation entre Marché de Gros et PONE}
-\input{Chapitres/Chapitre1/MarcheGrosPone}
+\subsection{Compilation sous Linux}
+\input{Chapitres/Chapitre2/SousLinux.tex}
 
-\subsection{Role de l'AMI}
-\input{Chapitres/Chapitre1/RoleAmi}
+\subsection{Compilation sous Windows}
+\input{Chapitres/Chapitre2/SousWindows.tex}
 
-\section{Diagramme}
-\input{Chapitres/Chapitre2/DiagrammeGeneral}
+\section{Technologie de communication}
 
-\subsection{Architecture Echange}
-\input{Chapitres/Chapitre2/ArchitectureEchange}
-
-\section{Les différentes relations}
-\input{Chapitres/Chapitre3/explication}
-
-\subsection{Realtion HTTP}
+\subsection{Hypertext Transfer Protocol}
 \input{Chapitres/Chapitre3/HTTP}
 
-\subsection{Relation UDP}
+\subsection{User Datagram Protocol}
 \input{Chapitres/Chapitre3/UDP}
 
-\subsection{Relation TCP}
+\subsection{Transmission Control Protocol}
 \input{Chapitres/Chapitre3/TCP}
 
-\subsection{Relation PHP}
-\input{Chapitres/Chapitre3/PHP}
+\section{Les différentes relations}
+\input{Chapitres/Chapitre4/explication}
 
-\section{Sénario}
-\input{Chapitres/Chapitre4/Senario0}
+\subsection{Relation entre Revendeur et Tare}
+\input{Chapitres/Chapitre4/RelationRevendeurTare}
+
+\subsection{Relation entre Tare et Marché de Gros}
+\input{Chapitres/Chapitre4/TareMarcheGros}
+
+\subsection{Relation entre Marché de Gros et PONE}
+\input{Chapitres/Chapitre4/MarcheGrosPone}
+
+\subsection{Role de l'AMI}
+\input{Chapitres/Chapitre4/RoleAmi}
+
+\section{Scénarios}
+\input{Chapitres/Chapitre5/Scenario0}
 
 \subsection{Scénario A}
-\input{Chapitres/Chapitre4/SenarioA}
+\input{Chapitres/Chapitre5/ScenarioA}
 
 \subsection{Scénario B}
-\input{Chapitres/Chapitre4/SenarioB}
+\input{Chapitres/Chapitre5/ScenarioB}
 
 \subsection{Scénario C}
-\input{Chapitres/Chapitre4/SenarioC}
+\input{Chapitres/Chapitre5/ScenarioC}
 
 \subsection{Scénario D}
-\input{Chapitres/Chapitre4/SenarioD}
+\input{Chapitres/Chapitre5/ScenarioD}
 
 \subsection{Scénario A2}
-\input{Chapitres/Chapitre4/SenarioA2}
+\input{Chapitres/Chapitre5/ScenarioA2}
 
 \section{Conclusion}
-\input{Chapitres/conclusion}
+\input{Chapitres/Chapitre6/conclusion}
 
+\input{Chapitres/Annexes/Annexes.tex}+
 
 \end{document}
